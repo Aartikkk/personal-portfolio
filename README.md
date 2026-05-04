@@ -25,7 +25,7 @@ personal-portfolio/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Aartikkk/personal-portfolio.git
+   git clone https://github.com/yourusername/personal-portfolio.git
    cd personal-portfolio
    ```
 2. Open `index.html` in your browser — no installation needed.

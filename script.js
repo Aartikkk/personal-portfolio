@@ -107,23 +107,20 @@ const revealObserver = new IntersectionObserver(
   { threshold: 0.15 }
 );
 
-// Add base styles via JS so they degrade gracefully without JS
+// Add base styles via JS so they degrade gracefully without JS,
+// then immediately reveal elements already in the viewport before observing.
 revealEls.forEach((el) => {
   el.style.opacity = '0';
   el.style.transform = 'translateY(24px)';
   el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  revealObserver.observe(el);
-});
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Trigger reveal for already-visible elements
-  revealEls.forEach((el) => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight) {
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    }
-  });
+  const rect = el.getBoundingClientRect();
+  if (rect.top < window.innerHeight) {
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0)';
+  } else {
+    revealObserver.observe(el);
+  }
 });
 
 // Handle the revealed class
