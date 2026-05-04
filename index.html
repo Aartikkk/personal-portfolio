@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aarti | Portfolio</title>
+    <meta
+      name="description"
+      content="Aarti Krishan Khatri — CS student, ML researcher, and software builder at Texas Tech University."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+    <div class="background-orb orb-one" aria-hidden="true"></div>
+    <div class="background-orb orb-two" aria-hidden="true"></div>
+    <div class="background-grid" aria-hidden="true"></div>
+
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="#top">Aarti</a>
+        <nav class="site-nav">
+          <a href="#about">About</a>
+          <a href="#education">Education</a>
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#contact">Contact</a>
+          <a href="#resume">Resume</a>
+        </nav>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+          <span class="theme-icon" aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero-photo-col">
+            <div class="portrait-frame" id="portrait-frame">
+              <img id="profile-photo" alt="Portrait of Aarti Krishan Khatri" />
+              <div class="portrait-fallback" id="portrait-fallback">AK</div>
+            </div>
+            <div class="availability-badge">
+              <span class="availability-dot" aria-hidden="true"></span>
+              Open to opportunities
+            </div>
+          </div>
+          <div class="hero-content">
+            <p class="eyebrow" id="hero-status">Texas Tech University</p>
+            <h1 class="hero-name" id="hero-name">Aarti Krishan Khatri</h1>
+            <p class="hero-tagline" id="hero-tagline">ML Researcher · Software Builder · Data Engineer</p>
+            <p class="hero-text" id="hero-description">
+              Computer Science student combining machine learning research, data engineering, and software development.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#projects">See Projects</a>
+              <a class="button button-secondary" id="hero-github-link" href="#contact">View GitHub</a>
+              <a class="button button-resume" id="hero-resume-link" href="assets/docs/resume.pdf" download>↓ Resume</a>
+            </div>
+            <div class="hero-quick-stats">
+              <div class="hqs-item">
+                <strong>3.8 / 4.0</strong>
+                <span>GPA · CS Honors</span>
+              </div>
+              <div class="hqs-divider" aria-hidden="true"></div>
+              <div class="hqs-item">
+                <strong>BMES 2025</strong>
+                <span>Conference Presenter</span>
+              </div>
+              <div class="hqs-divider" aria-hidden="true"></div>
+              <div class="hqs-item">
+                <strong>4 Roles</strong>
+                <span>Research &amp; Internships</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section profile-strip" id="profile">
+          <div class="stat-card" data-count="3.8">
+            <p class="section-kicker">GPA</p>
+            <h3 id="profile-gpa">3.8 / 4.0</h3>
+          </div>
+          <div class="stat-card">
+            <p class="section-kicker">Current Role</p>
+            <h3 id="profile-role">Research Assistant</h3>
+          </div>
+          <div class="stat-card">
+            <p class="section-kicker">Graduation</p>
+            <h3 id="profile-grad">December 2026</h3>
+          </div>
+          <div class="stat-card">
+            <p class="section-kicker">Location</p>
+            <h3>Lubbock, TX</h3>
+          </div>
+        </section>
+
+        <section class="section" id="about">
+          <div class="section-heading">
+            <p class="section-kicker">About</p>
+            <h2>A driven student with research, rigor, and range.</h2>
+          </div>
+          <div class="about-grid" id="about-grid">
+            <p>
+              Use this section to introduce who you are, what kind of work you
+              enjoy, and the value you bring.
+            </p>
+          </div>
+        </section>
+
+        <section class="section section-open" id="education">
+          <div class="section-heading">
+            <p class="section-kicker">Education</p>
+            <h2>The academic foundation behind the work.</h2>
+          </div>
+          <div class="timeline" id="education-list"></div>
+        </section>
+
+        <section class="section section-open" id="experience">
+          <div class="section-heading">
+            <p class="section-kicker">Experience</p>
+            <h2>Work, research, and the story still unfolding.</h2>
+          </div>
+          <div class="timeline" id="experience-list"></div>
+        </section>
+
+        <section class="section" id="projects">
+          <div class="section-heading">
+            <p class="section-kicker">Projects</p>
+            <h2>Research and internship projects with measurable impact.</h2>
+          </div>
+          <div class="project-grid" id="project-grid"></div>
+        </section>
+
+        <section class="section" id="bmes">
+          <div class="section-heading">
+            <p class="section-kicker">Conference</p>
+            <h2 id="bmes-title">BMES 2025 Conference Presentation</h2>
+          </div>
+          <div class="bmes-layout">
+            <div class="bmes-copy">
+              <p class="contact-text" id="bmes-event"></p>
+              <p class="contact-text" id="bmes-summary"></p>
+              <div class="bmes-highlights" id="bmes-highlights"></div>
+              <article class="bmes-abstract-card" id="bmes-abstract">
+                <p class="section-kicker">Abstract</p>
+                <p class="contact-text" id="bmes-abstract-text"></p>
+              </article>
+            </div>
+            <div class="bmes-side">
+              <a class="poster-preview" id="poster-preview-link" href="#" target="_blank" rel="noreferrer">
+                <img id="poster-preview-image" alt="BMES poster preview" />
+              </a>
+              <div class="bmes-actions" id="bmes-actions"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section section-open" id="skills">
+          <div class="section-heading">
+            <p class="section-kicker">Skills</p>
+            <h2>A growing toolkit across code, math, and research.</h2>
+          </div>
+          <div class="skill-list" id="skill-list"></div>
+        </section>
+
+        <section class="section section-open" id="coursework">
+          <div class="section-heading">
+            <p class="section-kicker">Coursework</p>
+            <h2>Relevant academic depth across systems, software, and AI.</h2>
+          </div>
+          <div class="skill-list" id="coursework-list"></div>
+        </section>
+
+        <section class="section section-awards" id="awards">
+          <div class="section-heading">
+            <p class="section-kicker">Awards</p>
+            <h2>Recognition earned through consistency and performance.</h2>
+          </div>
+          <div class="award-list" id="award-list"></div>
+        </section>
+
+        <section class="section" id="links">
+          <div class="section-heading">
+            <p class="section-kicker">Links</p>
+            <h2>Find me across the web.</h2>
+          </div>
+          <div class="link-grid" id="link-grid"></div>
+        </section>
+
+        <section class="section section-open" id="github-projects">
+          <div class="section-heading">
+            <p class="section-kicker">GitHub</p>
+            <h2>Public repositories and open-source work.</h2>
+          </div>
+          <div class="repo-grid" id="repo-grid"></div>
+        </section>
+
+        <section class="section resume-section" id="resume">
+          <div class="resume-cta">
+            <div class="resume-cta-text">
+              <p class="section-kicker">Resume</p>
+              <h2>Want to see the full picture?</h2>
+              <p class="contact-text">Download my one-page resume — experience, skills, research, and academic background all in one place.</p>
+            </div>
+            <a class="button button-resume-big" id="resume-cta-link" href="assets/docs/resume.pdf" download>
+              <span class="resume-btn-icon">↓</span>
+              <span>
+                <strong>Download Resume</strong>
+                <small>PDF · One page</small>
+              </span>
+            </a>
+          </div>
+        </section>
+
+        <section class="section contact-section" id="contact">
+          <div class="section-heading">
+            <p class="section-kicker">Contact</p>
+            <h2>Open to opportunities and conversations.</h2>
+          </div>
+          <p class="contact-text" id="contact-text">
+            The best way to reach me is by email.
+          </p>
+          <a class="button button-primary" id="email-link" href="mailto:hello@example.com"
+            >Email Me</a
+          >
+        </section>
+      </main>
+    </div>
+
+    <div class="cursor-glow" aria-hidden="true"></div>
+
+    <script src="portfolio-data.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
