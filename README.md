@@ -1,38 +1,52 @@
-# Personal Portfolio
+# Aarti Krishan Khatri — Personal Portfolio
 
-This portfolio is set up as a simple static website so it is easy to edit, upload to GitHub, and publish for others to view.
+A fully custom static portfolio site built with plain HTML, CSS, and JavaScript — no build tools, no frameworks, no npm. Designed with a dark/light glassmorphism aesthetic, 3D canvas animation, and smooth scroll-driven interactions.
 
-## Files
+## Stack
 
-- `index.html` contains the page structure.
-- `styles.css` contains the design and responsive layout.
-- `portfolio-data.js` contains your personal content, links, and project information.
-- `script.js` renders the portfolio content and handles reveal animations.
+- `index.html` — page structure and semantic markup
+- `styles.css` — design system, responsive layout, all animations
+- `portfolio-data.js` — all personal content (name, links, projects, experience, skills) in one place
+- `script.js` — rendering, 3D canvas, all interactive behaviors
 
-## How To Personalize It
+## Features
 
-Update `portfolio-data.js` with your real:
-- name
-- hero text
-- GitHub URL
-- LinkedIn URL
-- email
-- skills
-- project details
-- live demo links
+- **3D icosahedron** — rotating wireframe with mouse-reactive tilt and constellation particle network
+- **Particle constellation** — stars connect with lines when nearby, forming a living mesh
+- **Floating geometry** — fixed decorative shapes (hex, rings, squares, diamond) with independent animations
+- **Hero stagger entrance** — each element of the hero cascades in with offset delays
+- **Animated counters** — numeric stats count up on first scroll into view
+- **Magnetic buttons** — primary buttons pull toward the cursor
+- **Scroll parallax** — background orbs drift at different speeds as you scroll
+- **3D card tilt** — project and stat cards tilt toward the mouse in real time
+- **Skill filter** — tabs filter skills by category (Languages / Libraries / Tools)
+- **Typewriter tagline** — hero role cycles through options with a blinking cursor
+- **Scrollspy nav** — active section highlighted in the navigation bar
+- **Dark / light theme** — persisted to localStorage, smooth 400ms transition
+- **Scroll progress bar** — gradient bar across the top of the viewport
+- **Copy-to-clipboard email** — click email button copies address and shows a toast
+- **Timeline expand/collapse** — long descriptions truncated with read-more toggle
+- **Responsive** — works from 320px mobile to wide desktop
 
-## GitHub Workflow
+## Personalizing
 
-1. Create a new GitHub repository.
-2. Upload these files to the repository.
-3. Commit your changes.
-4. Enable GitHub Pages in the repository settings.
-5. Share the published GitHub Pages URL with others.
+Edit `portfolio-data.js` — it is the single source of truth for all content:
 
-## Recommended Build Order
+- `hero` — name, tagline, GitHub and resume links
+- `photo` — profile image path
+- `about` — bio paragraphs
+- `education` / `experience` — timeline entries
+- `projects` / `githubProjects` — project cards and repo cards
+- `skills` / `coursework` — chip lists
+- `awards` — award list
+- `bmes` — conference section (poster, abstract, highlights)
+- `links` / `contact` — social links and email
 
-1. Replace placeholder content in `portfolio-data.js`.
-2. Add your actual GitHub and LinkedIn links.
-3. Add screenshots or assets later if you want a richer portfolio.
-4. Publish the site through GitHub Pages.
-5. Keep updating projects as your work grows.
+To add a profile photo, place it at `assets/profile.jpg` and set `photo.src` in `portfolio-data.js`.
+
+## Deploying
+
+1. Push this repository to GitHub.
+2. Go to **Settings → Pages** in the repo.
+3. Set source to `main` branch, root folder.
+4. GitHub Pages will publish the site at `https://<username>.github.io/<repo>`.

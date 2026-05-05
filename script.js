@@ -32,11 +32,11 @@ const renderPortfolio = () => {
   document.title = portfolioData.siteTitle;
 
   const brand = document.querySelector(".brand");
-  if (brand) brand.textContent = portfolioData.brandName;
+  if (brand) brand.textContent = portfolioData.brandName.split(" ")[0];
 
-  setText("hero-status", portfolioData.hero.status);
-  setText("hero-name", portfolioData.hero.name);
-  setText("hero-tagline", portfolioData.hero.tagline);
+  setText("hero-status",      portfolioData.hero.status);
+  setText("hero-name",        portfolioData.hero.name);
+  setText("hero-tagline",     portfolioData.hero.tagline);
   setText("hero-description", portfolioData.hero.description);
   setLink("hero-github-link", portfolioData.hero.githubUrl, "View GitHub");
 
@@ -46,17 +46,17 @@ const renderPortfolio = () => {
     if (el && resumeUrl) el.href = resumeUrl;
   });
 
-  setText("focus-title", portfolioData.focus.title);
-  setText("profile-gpa", portfolioData.profile.gpa);
+  setText("profile-gpa",  portfolioData.profile.gpa);
   setText("profile-role", portfolioData.profile.currentRole);
   setText("profile-grad", portfolioData.profile.expectedGraduation);
-  setText("bmes-title", portfolioData.bmes.title);
-  setText("bmes-event", portfolioData.bmes.event);
-  setText("bmes-summary", portfolioData.bmes.summary);
+
+  setText("bmes-title",         portfolioData.bmes.title);
+  setText("bmes-event",         portfolioData.bmes.event);
+  setText("bmes-summary",       portfolioData.bmes.summary);
   setText("bmes-abstract-text", portfolioData.bmes.abstract);
 
   const portraitFrame = document.getElementById("portrait-frame");
-  const profilePhoto = document.getElementById("profile-photo");
+  const profilePhoto  = document.getElementById("profile-photo");
   if (portraitFrame && profilePhoto && portfolioData.photo?.src) {
     profilePhoto.src = portfolioData.photo.src;
     profilePhoto.alt = portfolioData.photo.alt || "";
@@ -66,17 +66,10 @@ const renderPortfolio = () => {
   }
 
   const posterLink = document.getElementById("poster-preview-link");
-  const posterImg = document.getElementById("poster-preview-image");
+  const posterImg  = document.getElementById("poster-preview-image");
   if (posterLink && posterImg && portfolioData.bmes?.previewImage) {
     posterLink.href = portfolioData.bmes.posterUrl;
-    posterImg.src = portfolioData.bmes.previewImage;
-  }
-
-  const focusList = document.getElementById("focus-list");
-  if (focusList) {
-    focusList.innerHTML = portfolioData.focus.items
-      .map((item) => `<li>${item}</li>`)
-      .join("");
+    posterImg.src   = portfolioData.bmes.previewImage;
   }
 
   const aboutGrid = document.getElementById("about-grid");
@@ -234,12 +227,10 @@ renderPortfolio();
 
 /* ── THEME SYSTEM ── */
 function initTheme() {
-  const html = document.documentElement;
+  const html   = document.documentElement;
   const toggle = document.getElementById("theme-toggle");
-
-  const saved = localStorage.getItem("portfolio-theme");
+  const saved  = localStorage.getItem("portfolio-theme");
   if (saved) html.dataset.theme = saved;
-
   if (!toggle) return;
   toggle.addEventListener("click", () => {
     const next = html.dataset.theme === "dark" ? "light" : "dark";
@@ -256,16 +247,15 @@ function initCanvas3D() {
 
   let W, H;
   const resize = () => {
-    W = canvas.width = window.innerWidth;
+    W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
   };
   resize();
   window.addEventListener("resize", resize, { passive: true });
 
-  // Icosahedron: 12 vertices, 30 edges
-  const PHI = (1 + Math.sqrt(5)) / 2;
-  const SCALE = 170;
-  const rawV = [
+  const PHI   = (1 + Math.sqrt(5)) / 2;
+  const SCALE = 210;
+  const rawV  = [
     [0,1,PHI],[0,-1,PHI],[0,1,-PHI],[0,-1,-PHI],
     [1,PHI,0],[-1,PHI,0],[1,-PHI,0],[-1,-PHI,0],
     [PHI,0,1],[-PHI,0,1],[PHI,0,-1],[-PHI,0,-1],
@@ -286,12 +276,11 @@ function initCanvas3D() {
     [8,10],[9,11],
   ];
 
-  // Starfield
-  const N = 190;
+  const N     = 220;
   const stars = Array.from({ length: N }, () => ({
-    x: (Math.random() - 0.5) * 1800,
-    y: (Math.random() - 0.5) * 1400,
-    z: Math.random() * 1000,
+    x:     (Math.random() - 0.5) * 1800,
+    y:     (Math.random() - 0.5) * 1400,
+    z:     Math.random() * 1000,
     speed: Math.random() * 0.7 + 0.2,
   }));
 
@@ -299,7 +288,7 @@ function initCanvas3D() {
 
   window.addEventListener("mousemove", (e) => {
     tgtX = (e.clientY / window.innerHeight - 0.5) * 0.7;
-    tgtY = (e.clientX / window.innerWidth - 0.5) * 1.0;
+    tgtY = (e.clientX / window.innerWidth  - 0.5) * 1.0;
   }, { passive: true });
 
   const ry = (v, a) => {
@@ -311,63 +300,72 @@ function initCanvas3D() {
     return [v[0], v[1]*c - v[2]*s, v[1]*s + v[2]*c];
   };
   const project = (v) => {
-    const FL = 500;
-    const z = v[2] + 550;
-    const s = FL / z;
+    const FL = 500, z = v[2] + 550, s = FL / z;
     return [W/2 + v[0]*s, H/2 + v[1]*s, s, z];
   };
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    t += 0.004;
+    t    += 0.004;
     rotX += (tgtX - rotX) * 0.04;
     rotY += (tgtY - rotY) * 0.04;
 
-    const isDark = document.documentElement.dataset.theme !== "light";
-    const starC  = isDark ? "155,135,255" : "80,60,160";
-    const lineC  = isDark ? "124,111,224" : "80,60,180";
-    const dotC   = isDark ? "140,120,255" : "80,60,180";
-    const accentC = isDark ? "0,210,255" : "0,150,200";
-    const starAlpha = isDark ? 0.6 : 0.28;
-    const lineAlpha = isDark ? 0.55 : 0.28;
+    const isDark  = document.documentElement.dataset.theme !== "light";
+    const starC   = isDark ? "155,135,255" : "100,55,210";
+    const lineC   = isDark ? "124,111,224" : "80,40,195";
+    const dotC    = isDark ? "140,120,255" : "60,30,180";
+    const accentC = isDark ? "0,210,255"   : "225,65,105";
+    const sAlpha  = isDark ? 0.65 : 0.60;
+    const lAlpha  = isDark ? 0.65 : 0.68;
 
-    // Draw starfield (particles flying toward viewer)
+    // Project all visible stars and cache screen coords
+    const vis = [];
     for (const s of stars) {
       s.z -= s.speed;
-      if (s.z <= 1) {
-        s.z = 1000;
-        s.x = (Math.random() - 0.5) * 1800;
-        s.y = (Math.random() - 0.5) * 1400;
-      }
-      const FL = 500;
-      const sc = FL / (s.z + 20);
-      const sx = W/2 + s.x * sc;
-      const sy = H/2 + s.y * sc;
+      if (s.z <= 1) { s.z = 1000; s.x = (Math.random()-0.5)*1800; s.y = (Math.random()-0.5)*1400; }
+      const sc = 500 / (s.z + 20);
+      const sx = W/2 + s.x * sc, sy = H/2 + s.y * sc;
       if (sx < -10 || sx > W+10 || sy < -10 || sy > H+10) continue;
-      const size = Math.min(2.5, sc * 1.6);
-      const a = (1 - s.z / 1000) * starAlpha;
+      vis.push({ x: sx, y: sy, size: Math.min(2.5, sc * 1.6), a: (1 - s.z / 1000) * sAlpha });
+    }
+
+    // Constellation: batch-draw lines between nearby particles
+    const CONN_SQ = 115 * 115;
+    ctx.lineWidth = 0.5;
+    ctx.strokeStyle = `rgba(${starC},${(0.20 * sAlpha).toFixed(3)})`;
+    ctx.beginPath();
+    for (let i = 0; i < vis.length; i++) {
+      for (let j = i + 1; j < vis.length; j++) {
+        const dx = vis[i].x - vis[j].x, dy = vis[i].y - vis[j].y;
+        if (dx * dx + dy * dy > CONN_SQ) continue;
+        ctx.moveTo(vis[i].x, vis[i].y);
+        ctx.lineTo(vis[j].x, vis[j].y);
+      }
+    }
+    ctx.stroke();
+
+    // Star dots rendered on top of constellation lines
+    for (const p of vis) {
       ctx.beginPath();
-      ctx.arc(sx, sy, Math.max(0.3, size), 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${starC},${a})`;
+      ctx.arc(p.x, p.y, Math.max(0.3, p.size), 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${starC},${p.a})`;
       ctx.fill();
     }
 
-    // Draw icosahedron
     const angleY = t * 0.35 + rotY;
-    const angleX = t * 0.2 + rotX;
-    const proj = verts.map(v => project(rx(ry(v, angleY), angleX)));
+    const angleX = t * 0.20 + rotX;
+    const proj   = verts.map((v) => project(rx(ry(v, angleY), angleX)));
 
-    ctx.lineWidth = 0.85;
+    ctx.lineWidth = isDark ? 0.9 : 1.4;
     for (const [a, b] of edges) {
       const pa = proj[a], pb = proj[b];
-      const avgZ = (pa[3] + pb[3]) / 2;
-      const alpha = Math.max(0, (1 - avgZ / 740)) * lineAlpha;
+      const avgZ  = (pa[3] + pb[3]) / 2;
+      const alpha = Math.max(0, (1 - avgZ / 740)) * lAlpha;
       if (alpha < 0.01) continue;
-
       const g = ctx.createLinearGradient(pa[0], pa[1], pb[0], pb[1]);
-      g.addColorStop(0, `rgba(${lineC},${alpha})`);
-      g.addColorStop(0.5, `rgba(${accentC},${alpha * 0.7})`);
-      g.addColorStop(1, `rgba(${lineC},${alpha})`);
+      g.addColorStop(0,   `rgba(${lineC},${alpha})`);
+      g.addColorStop(0.5, `rgba(${accentC},${isDark ? alpha * 0.7 : alpha * 0.92})`);
+      g.addColorStop(1,   `rgba(${lineC},${alpha})`);
       ctx.beginPath();
       ctx.strokeStyle = g;
       ctx.moveTo(pa[0], pa[1]);
@@ -375,10 +373,9 @@ function initCanvas3D() {
       ctx.stroke();
     }
 
-    // Icosahedron vertex dots
     for (const p of proj) {
-      const size = Math.max(0.5, p[2] * 5);
-      const alpha = Math.max(0.08, (1 - p[3] / 740)) * (isDark ? 0.9 : 0.55);
+      const size  = Math.max(0.5, p[2] * (isDark ? 5 : 6.5));
+      const alpha = Math.max(0.08, (1 - p[3] / 740)) * (isDark ? 0.9 : 0.85);
       ctx.beginPath();
       ctx.arc(p[0], p[1], size, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${dotC},${alpha})`;
@@ -394,26 +391,21 @@ function initCanvas3D() {
 /* ── 3D CARD TILT ── */
 function initCardTilt() {
   const cards = document.querySelectorAll(".project-card, .stat-card");
-
   cards.forEach((card) => {
     card.addEventListener("mouseenter", () => {
       card.style.transition = "transform 80ms ease-out, box-shadow 80ms ease-out";
     });
-
     card.addEventListener("mousemove", (e) => {
       const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
-      const rX = ((y - cy) / cy) * -7;
-      const rY = ((x - cx) / cx) * 7;
+      const x  = e.clientX - rect.left;
+      const y  = e.clientY - rect.top;
+      const rX = ((y - rect.height / 2) / (rect.height / 2)) * -7;
+      const rY = ((x - rect.width  / 2) / (rect.width  / 2)) * 7;
       card.style.transform = `perspective(900px) rotateX(${rX}deg) rotateY(${rY}deg) translateZ(8px)`;
     });
-
     card.addEventListener("mouseleave", () => {
       card.style.transition = "transform 450ms cubic-bezier(0.16,1,0.3,1), box-shadow 450ms ease";
-      card.style.transform = "";
+      card.style.transform  = "";
     });
   });
 }
@@ -422,7 +414,6 @@ function initCardTilt() {
 function initScrollProgress() {
   const bar = document.getElementById("scroll-progress");
   if (!bar) return;
-
   window.addEventListener(
     "scroll",
     () => {
@@ -436,16 +427,15 @@ function initScrollProgress() {
 
 /* ── STAGGER ANIMATION ── */
 function initStagger() {
-  const staggerContainers = document.querySelectorAll(
-    ".timeline, .award-list, .link-grid, .repo-grid, .project-grid, .skill-list"
+  const containers = document.querySelectorAll(
+    ".timeline, .award-list, .link-grid, .repo-grid, .project-grid, .skill-list, .about-grid"
   );
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const children = Array.from(entry.target.children);
-        children.forEach((child, i) => {
+        Array.from(entry.target.children).forEach((child, i) => {
           child.style.transitionDelay = `${i * 70}ms`;
           child.classList.add("is-visible");
         });
@@ -455,10 +445,8 @@ function initStagger() {
     { threshold: 0.08 }
   );
 
-  staggerContainers.forEach((el) => {
-    Array.from(el.children).forEach((child) => {
-      child.classList.add("stagger-child");
-    });
+  containers.forEach((el) => {
+    Array.from(el.children).forEach((child) => child.classList.add("stagger-child"));
     observer.observe(el);
   });
 }
@@ -485,8 +473,266 @@ const cursorGlow = document.querySelector(".cursor-glow");
 if (cursorGlow) {
   window.addEventListener("pointermove", (e) => {
     cursorGlow.style.left = `${e.clientX}px`;
-    cursorGlow.style.top = `${e.clientY}px`;
+    cursorGlow.style.top  = `${e.clientY}px`;
   }, { passive: true });
+}
+
+/* ── SCROLLSPY ── */
+function initScrollspy() {
+  const navLinks   = document.querySelectorAll('.site-nav a[href^="#"]');
+  const sectionMap = [];
+
+  navLinks.forEach((link) => {
+    const id = link.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) sectionMap.push({ el, link });
+  });
+
+  if (!sectionMap.length) return;
+
+  function update() {
+    const threshold = window.scrollY + window.innerHeight * 0.3;
+    let active = null;
+
+    for (const item of sectionMap) {
+      if (item.el.offsetTop <= threshold) active = item;
+    }
+
+    navLinks.forEach((l) => l.classList.remove('nav-active'));
+    if (active) active.link.classList.add('nav-active');
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+/* ── SKILL FILTER TABS ── */
+function initSkillFilter() {
+  const section = document.getElementById('skills');
+  const list    = document.getElementById('skill-list');
+  if (!section || !list) return;
+
+  const CATS = [
+    { key: 'all',  label: 'All' },
+    { key: 'lang', label: 'Languages' },
+    { key: 'lib',  label: 'Libraries' },
+    { key: 'tool', label: 'Tools' },
+  ];
+
+  const bar = document.createElement('div');
+  bar.className = 'skill-filter';
+  bar.setAttribute('role', 'group');
+  bar.setAttribute('aria-label', 'Filter skills by category');
+
+  CATS.forEach(({ key, label }) => {
+    const btn       = document.createElement('button');
+    btn.className   = 'skill-filter-btn' + (key === 'all' ? ' active' : '');
+    btn.textContent = label;
+    btn.dataset.filter = key;
+
+    btn.addEventListener('click', () => {
+      bar.querySelectorAll('.skill-filter-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      list.querySelectorAll('span').forEach((chip) => {
+        const cat     = chip.dataset.cat || 'lib';
+        const visible = key === 'all' || cat === key;
+        chip.classList.toggle('skill-hidden', !visible);
+
+        if (visible) {
+          chip.style.animation = 'none';
+          chip.offsetHeight;
+          chip.style.animation = 'chipIn 220ms ease forwards';
+        }
+      });
+    });
+
+    bar.appendChild(btn);
+  });
+
+  list.parentElement.insertBefore(bar, list);
+}
+
+/* ── COPY EMAIL + TOAST ── */
+function showToast(msg) {
+  document.querySelector('.toast')?.remove();
+  const t     = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('toast-show')));
+  setTimeout(() => {
+    t.classList.remove('toast-show');
+    setTimeout(() => t.remove(), 300);
+  }, 2200);
+}
+
+function initCopyEmail() {
+  const link = document.getElementById('email-link');
+  if (!link) return;
+
+  link.title = 'Click to copy · or open email client';
+
+  link.addEventListener('click', (e) => {
+    const email = portfolioData?.contact?.email;
+    if (!email || !navigator.clipboard) return;
+
+    e.preventDefault();
+    navigator.clipboard.writeText(email)
+      .then(() => showToast('✓  Copied to clipboard'))
+      .catch(() => { window.location.href = link.href; });
+  });
+}
+
+/* ── TYPEWRITER TAGLINE ── */
+function initTypewriter() {
+  const el = document.getElementById('hero-tagline');
+  if (!el) return;
+
+  const roles = [
+    'ML Researcher',
+    'Software Builder',
+    'Data Engineer',
+    'CS Honors Student',
+  ];
+
+  // Replace element content with typed span + blinking cursor
+  el.innerHTML = '<span class="tw-text"></span><span class="tw-cursor" aria-hidden="true"></span>';
+  const textEl = el.querySelector('.tw-text');
+
+  let roleIdx    = 0;
+  let charIdx    = 0;
+  let isDeleting = false;
+
+  function tick() {
+    const word = roles[roleIdx];
+
+    if (isDeleting) {
+      charIdx--;
+      textEl.textContent = word.slice(0, charIdx);
+      if (charIdx === 0) {
+        isDeleting = false;
+        roleIdx    = (roleIdx + 1) % roles.length;
+        setTimeout(tick, 380);
+        return;
+      }
+      setTimeout(tick, 38);
+    } else {
+      charIdx++;
+      textEl.textContent = word.slice(0, charIdx);
+      if (charIdx === word.length) {
+        isDeleting = true;
+        setTimeout(tick, 1900); // pause on full word
+        return;
+      }
+      setTimeout(tick, 72);
+    }
+  }
+
+  tick();
+}
+
+/* ── TIMELINE READ MORE / LESS ── */
+function initTimelineExpand() {
+  const LIMIT = 118; // chars before truncating
+
+  document.querySelectorAll('.timeline-item p').forEach((p) => {
+    const full = p.textContent.trim();
+    if (full.length <= LIMIT) return;
+
+    const cutAt = full.lastIndexOf(' ', LIMIT);
+    const short = full.slice(0, cutAt > 0 ? cutAt : LIMIT) + '…';
+
+    p.innerHTML =
+      `<span class="tl-short">${short}</span>` +
+      `<span class="tl-full" hidden>${full}</span>`;
+
+    const btn = document.createElement('button');
+    btn.className = 'tl-toggle';
+    btn.textContent = 'Read more';
+    btn.setAttribute('aria-expanded', 'false');
+
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      p.querySelector('.tl-short').hidden = !expanded;
+      p.querySelector('.tl-full').hidden  =  expanded;
+      btn.textContent = expanded ? 'Read more' : 'Read less';
+      btn.setAttribute('aria-expanded', String(!expanded));
+    });
+
+    p.after(btn);
+  });
+}
+
+/* ── PARALLAX ORBS ── */
+function initParallax() {
+  const orbs = [
+    { el: document.querySelector('.orb-one'),   speed: 0.07 },
+    { el: document.querySelector('.orb-two'),   speed: 0.05 },
+    { el: document.querySelector('.orb-three'), speed: 0.11 },
+  ];
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      orbs.forEach(({ el, speed }) => {
+        if (el) el.style.transform = `translateY(${y * speed}px)`;
+      });
+      ticking = false;
+    });
+  }, { passive: true });
+}
+
+/* ── ANIMATED COUNTERS ── */
+function initCounters() {
+  document.querySelectorAll('.hqs-item strong, .stat-card h3').forEach(el => {
+    const text  = el.textContent.trim();
+    const match = text.match(/^(\d+\.?\d*)([\s\S]*)/);
+    if (!match) return;
+
+    const end    = parseFloat(match[1]);
+    const suffix = match[2];
+    const dec    = match[1].includes('.') ? match[1].split('.')[1].length : 0;
+    let done = false;
+
+    const obs = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting || done) return;
+      done = true;
+      obs.disconnect();
+
+      const duration = 1300;
+      const t0 = performance.now();
+      (function step(now) {
+        const p     = Math.min((now - t0) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = (end * eased).toFixed(dec) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      })(performance.now());
+    }, { threshold: 0.6 });
+
+    obs.observe(el);
+  });
+}
+
+/* ── MAGNETIC BUTTONS ── */
+function initMagneticButtons() {
+  document.querySelectorAll('.button-primary, .button-resume, .button-resume-big').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      btn.style.transition = 'transform 80ms ease-out, box-shadow 80ms ease-out';
+    });
+    btn.addEventListener('mousemove', e => {
+      const r  = btn.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width  / 2)) * 0.3;
+      const dy = (e.clientY - (r.top  + r.height / 2)) * 0.3;
+      btn.style.transform = `translate(${dx}px, ${dy}px) translateY(-3px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transition = 'transform 450ms cubic-bezier(0.16,1,0.3,1), box-shadow 450ms ease';
+      btn.style.transform  = '';
+    });
+  });
 }
 
 /* ── REPO LINK CHIPS ── */
@@ -500,9 +746,16 @@ document.addEventListener("click", (e) => {
 });
 
 /* ── INIT ── */
-// Scripts at bottom of <body> run after HTML is fully parsed, so no need to wait
 initTheme();
 initCanvas3D();
 initScrollProgress();
 initCardTilt();
 initStagger();
+initScrollspy();
+initSkillFilter();
+initCopyEmail();
+initTypewriter();
+initTimelineExpand();
+initParallax();
+initCounters();
+initMagneticButtons();
