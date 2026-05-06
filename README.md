@@ -1,6 +1,6 @@
 # Aarti Krishan Khatri — Personal Portfolio
 
-A fully custom static portfolio site built with plain HTML, CSS, and JavaScript — no build tools, no frameworks, no npm. Designed with a dark/light glassmorphism aesthetic, 3D canvas animation, and smooth scroll-driven interactions.
+A fully custom static portfolio site built with plain HTML, CSS, and JavaScript — no build tools, no frameworks, no npm. Designed with a coffee/espresso aesthetic, immersive 3D canvas animation, depth-layered hero section, and scroll-driven interactions.
 
 ## Stack
 
@@ -11,22 +11,36 @@ A fully custom static portfolio site built with plain HTML, CSS, and JavaScript 
 
 ## Features
 
-- **3D icosahedron** — rotating wireframe with mouse-reactive tilt and constellation particle network
-- **Particle constellation** — stars connect with lines when nearby, forming a living mesh
-- **Floating geometry** — fixed decorative shapes (hex, rings, squares, diamond) with independent animations
-- **Hero stagger entrance** — each element of the hero cascades in with offset delays
+### 3D & Canvas
+- **Dual icosahedra** — large rotating wireframe (primary) + smaller ambient secondary, both mouse-reactive with amber gradient edges
+- **Floating 3D rings** — three tilted ambient rings orbiting at screen-anchored positions, each spinning on its own axis with Z-drift breathing
+- **Constellation network** — stars connect with lines when nearby, forming a living mesh across the canvas
+- **Steam wisps** — warm cream particles rising from the bottom of the canvas
+- **Hero depth scene** — portrait at `Z = 60px`, text content at `Z = 16px` inside a `perspective: 1300px` container, creating genuine binocular parallax on mouse move
+
+### Animations & Interactions
+- **Section perspective entrances** — every section rotates in from `rotateX(-16deg) scale(0.95)`, like 3D planes tipping up toward the viewer on scroll
+- **Card specular highlight** — project and stat cards show a mouse-tracked radial light blob (`::after` with CSS variable `--mx`/`--my`) at ±18° tilt and `translateZ(28px)`
+- **Hero stagger entrance** — each hero element cascades in with offset delays
 - **Animated counters** — numeric stats count up on first scroll into view
 - **Magnetic buttons** — primary buttons pull toward the cursor
-- **Scroll parallax** — background orbs drift at different speeds as you scroll
-- **3D card tilt** — project and stat cards tilt toward the mouse in real time
-- **Skill filter** — tabs filter skills by category (Languages / Libraries / Tools)
 - **Typewriter tagline** — hero role cycles through options with a blinking cursor
+- **Hero scroll scale** — hero section gently shrinks as you scroll past it
+
+### Navigation & UX
 - **Scrollspy nav** — active section highlighted in the navigation bar
-- **Dark / light theme** — persisted to localStorage, smooth 400ms transition
-- **Scroll progress bar** — gradient bar across the top of the viewport
-- **Copy-to-clipboard email** — click email button copies address and shows a toast
+- **Scroll progress bar** — amber gradient bar across the top of the viewport
+- **Dark / light theme** — espresso dark / café latte light, persisted to localStorage with 400ms transitions
+- **Copy-to-clipboard email** — clicking the email button copies the address and shows a toast
 - **Timeline expand/collapse** — long descriptions truncated with read-more toggle
-- **Responsive** — works from 320px mobile to wide desktop
+- **Skill filter tabs** — filter skills by category (Languages / Libraries / Tools)
+
+### Visual Polish
+- **Film grain texture** — animated SVG `feTurbulence` overlay for warmth and texture
+- **Coffee-themed geometry** — floating rings, bean shape, hex, squares, and diamond with amber animations
+- **Section heading accent lines** — 42px amber gradient underline on every section title
+- **Warm ambient body glow** — radial gradient light source at the top of the page
+- **Background orb parallax** — three colored orbs drift at different speeds on scroll
 
 ## Personalizing
 
@@ -36,7 +50,7 @@ Edit `portfolio-data.js` — it is the single source of truth for all content:
 - `photo` — profile image path
 - `about` — bio paragraphs
 - `education` / `experience` — timeline entries
-- `projects` / `githubProjects` — project cards and repo cards
+- `projects` — project cards (supports `tag`, `stack`, `githubUrl`, `liveUrl`, `extraLinks`)
 - `skills` / `coursework` — chip lists
 - `awards` — award list
 - `bmes` — conference section (poster, abstract, highlights)
@@ -44,9 +58,15 @@ Edit `portfolio-data.js` — it is the single source of truth for all content:
 
 To add a profile photo, place it at `assets/profile.jpg` and set `photo.src` in `portfolio-data.js`.
 
+## Local Development
+
+```bash
+python -m http.server 3000
+# open http://localhost:3000
+```
+
+No build step required.
+
 ## Deploying
 
-1. Push this repository to GitHub.
-2. Go to **Settings → Pages** in the repo.
-3. Set source to `main` branch, root folder.
-4. GitHub Pages will publish the site at `https://<username>.github.io/<repo>`.
+Deployed via **Vercel** — push to `main` and the site updates automatically within ~60 seconds.
