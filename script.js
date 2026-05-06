@@ -115,6 +115,9 @@ const renderPortfolio = () => {
               ${p.githubUrl
                 ? `<a class="button button-primary" href="${p.githubUrl}" target="_blank" rel="noreferrer">GitHub</a>`
                 : ""}
+              ${(p.extraLinks || []).map(l =>
+                `<a class="button button-secondary" href="${l.url}" target="_blank" rel="noreferrer">${l.label}</a>`
+              ).join("")}
             </div>
             ${p.note ? `<p class="project-note">${p.note}</p>` : ""}
           </div>
@@ -184,11 +187,6 @@ const renderPortfolio = () => {
         <p class="section-kicker">Poster</p>
         <h3>${portfolioData.bmes.posterLabel}</h3>
         <p>Open the poster PDF in the browser or download it.</p>
-      </a>
-      <a class="bmes-action" href="${portfolioData.bmes.abstractUrl}">
-        <p class="section-kicker">Abstract</p>
-        <h3>${portfolioData.bmes.abstractLabel}</h3>
-        <p>Read the abstract for this research presentation.</p>
       </a>`;
   }
 
@@ -249,12 +247,13 @@ function initCanvas3D() {
   const resize = () => {
     W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
+    steamParticles = null;
   };
   resize();
   window.addEventListener("resize", resize, { passive: true });
 
   const PHI   = (1 + Math.sqrt(5)) / 2;
-  const SCALE = 210;
+  const SCALE = 245;
   const rawV  = [
     [0,1,PHI],[0,-1,PHI],[0,1,-PHI],[0,-1,-PHI],
     [1,PHI,0],[-1,PHI,0],[1,-PHI,0],[-1,-PHI,0],
@@ -263,6 +262,11 @@ function initCanvas3D() {
   const verts = rawV.map(([x,y,z]) => {
     const len = Math.sqrt(x*x+y*y+z*z);
     return [x/len*SCALE, y/len*SCALE, z/len*SCALE];
+  });
+  const SCALE2 = 84;
+  const verts2 = rawV.map(([x,y,z]) => {
+    const len = Math.sqrt(x*x+y*y+z*z);
+    return [x/len*SCALE2, y/len*SCALE2, z/len*SCALE2];
   });
   const edges = [
     [0,1],[0,4],[0,5],[0,8],[0,9],
@@ -285,6 +289,18 @@ function initCanvas3D() {
   }));
 
   let rotX = 0, rotY = 0, tgtX = 0, tgtY = 0, t = 0;
+  let steamParticles = null;
+
+  function buildSteam() {
+    steamParticles = Array.from({ length: 55 }, () => ({
+      x: Math.random() * W,
+      y: H * 0.55 + Math.random() * H * 0.45,
+      vy: -(Math.random() * 0.55 + 0.22),
+      phase: Math.random() * Math.PI * 2,
+      life: Math.random(),
+      size: Math.random() * 1.6 + 0.5,
+    }));
+  }
 
   window.addEventListener("mousemove", (e) => {
     tgtX = (e.clientY / window.innerHeight - 0.5) * 0.7;
@@ -304,6 +320,27 @@ function initCanvas3D() {
     return [W/2 + v[0]*s, H/2 + v[1]*s, s, z];
   };
 
+  // ── 3D FLOATING RINGS ─────────────────────────────────────────
+  // Each ring is a tilted circle in screen-anchored 3D space.
+  // sx/sy = screen anchor (fraction of W/H), r = world radius,
+  // btx/bty = base tilt angles, ph = drift phase, spin = rotation speed
+  const RING_SEGS = 72;
+  const ringDefs = [
+    { sx: 0.10, sy: 0.20, r: 148, btx:  0.58, bty:  0.32, ph: 0.0, spin:  0.00024 },
+    { sx: 0.90, sy: 0.58, r: 118, btx: -0.40, bty:  0.65, ph: 2.1, spin: -0.00017 },
+    { sx: 0.30, sy: 0.84, r:  90, btx:  0.22, bty: -0.48, ph: 4.3, spin:  0.00031 },
+  ];
+  // Pre-bake base tilt so draw() only applies spin + camera
+  ringDefs.forEach(rd => {
+    rd.verts = Array.from({ length: RING_SEGS }, (_, i) => {
+      const θ = (i / RING_SEGS) * Math.PI * 2;
+      let v = [Math.cos(θ) * rd.r, Math.sin(θ) * rd.r, 0];
+      v = rx(v, rd.btx);
+      v = ry(v, rd.bty);
+      return v;
+    });
+  });
+
   function draw() {
     ctx.clearRect(0, 0, W, H);
     t    += 0.004;
@@ -311,12 +348,12 @@ function initCanvas3D() {
     rotY += (tgtY - rotY) * 0.04;
 
     const isDark  = document.documentElement.dataset.theme !== "light";
-    const starC   = isDark ? "155,135,255" : "100,55,210";
-    const lineC   = isDark ? "124,111,224" : "80,40,195";
-    const dotC    = isDark ? "140,120,255" : "60,30,180";
-    const accentC = isDark ? "0,210,255"   : "225,65,105";
-    const sAlpha  = isDark ? 0.65 : 0.60;
-    const lAlpha  = isDark ? 0.65 : 0.68;
+    const starC   = isDark ? "220,185,130" : "140,80,20";
+    const lineC   = isDark ? "196,134,52"  : "160,90,30";
+    const dotC    = isDark ? "210,160,70"  : "140,80,20";
+    const accentC = isDark ? "238,198,110" : "180,110,40";
+    const sAlpha  = isDark ? 0.58 : 0.52;
+    const lAlpha  = isDark ? 0.60 : 0.64;
 
     // Project all visible stars and cache screen coords
     const vis = [];
@@ -352,11 +389,62 @@ function initCanvas3D() {
       ctx.fill();
     }
 
+    // Steam wisps — warm cream particles rising from below
+    if (!steamParticles) buildSteam();
+    for (const p of steamParticles) {
+      p.y += p.vy;
+      p.x += Math.sin(t * 1.4 + p.phase) * 0.38;
+      p.life += 0.0032;
+      if (p.life >= 1 || p.y < -24) {
+        p.y = H * 0.6 + Math.random() * H * 0.4;
+        p.x = Math.random() * W;
+        p.life = 0;
+      }
+      const sa = Math.sin(p.life * Math.PI) * (isDark ? 0.22 : 0.13);
+      if (sa < 0.015) continue;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(0.4, p.size + p.life * 0.9), 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(240,210,160,${sa.toFixed(3)})`;
+      ctx.fill();
+    }
+
+    // ── Ambient 3D rings ──────────────────────────────────────────
+    const rAlphaBase = isDark ? 0.115 : 0.085;
+    for (const rd of ringDefs) {
+      const spinA = t * rd.spin * Math.PI * 2;
+      const drift  = Math.sin(t * 0.28 + rd.ph) * 34;
+      const ax = W * rd.sx;
+      const ay = H * rd.sy;
+
+      ctx.beginPath();
+      let first = true;
+      let zSum = 0, zCount = 0;
+      for (const v of rd.verts) {
+        // Slow own spin + small camera coupling for parallax feel
+        let p = ry(v, spinA + rotY * 0.14);
+        p     = rx(p, spinA * 0.7 + rotX * 0.10);
+        const z = p[2] + drift + 460;
+        if (z < 5) { first = true; continue; }
+        zSum += z; zCount++;
+        const s  = 420 / z;
+        const sx = ax + p[0] * s;
+        const sy = ay + p[1] * s;
+        if (first) { ctx.moveTo(sx, sy); first = false; }
+        else        ctx.lineTo(sx, sy);
+      }
+      ctx.closePath();
+      const avgRZ   = zCount > 0 ? zSum / zCount : 460;
+      const depthFade = Math.max(0, 1 - (avgRZ - 300) / 600);
+      ctx.strokeStyle = `rgba(${lineC},${(rAlphaBase * depthFade).toFixed(3)})`;
+      ctx.lineWidth   = isDark ? 0.9 : 1.15;
+      ctx.stroke();
+    }
+
     const angleY = t * 0.35 + rotY;
     const angleX = t * 0.20 + rotX;
     const proj   = verts.map((v) => project(rx(ry(v, angleY), angleX)));
 
-    ctx.lineWidth = isDark ? 0.9 : 1.4;
+    ctx.lineWidth = isDark ? 1.1 : 1.5;
     for (const [a, b] of edges) {
       const pa = proj[a], pb = proj[b];
       const avgZ  = (pa[3] + pb[3]) / 2;
@@ -382,6 +470,41 @@ function initCanvas3D() {
       ctx.fill();
     }
 
+    // Second smaller icosahedron — lower-right, reverse rotation, more ambient
+    const ox2 = W * 0.76, oy2 = H * 0.70;
+    const project2 = (v) => {
+      const FL = 500, z = v[2] + 620, s = FL / z;
+      return [ox2 + v[0]*s, oy2 + v[1]*s, s, z];
+    };
+    const aY2 = -t * 0.19 - rotY * 0.32;
+    const aX2 =  t * 0.13 - rotX * 0.32;
+    const proj2 = verts2.map((v) => project2(rx(ry(v, aY2), aX2)));
+
+    ctx.lineWidth = isDark ? 0.65 : 0.9;
+    for (const [a, b] of edges) {
+      const pa = proj2[a], pb = proj2[b];
+      const avgZ  = (pa[3] + pb[3]) / 2;
+      const alpha = Math.max(0, (1 - avgZ / 740)) * lAlpha * 0.44;
+      if (alpha < 0.01) continue;
+      const g2 = ctx.createLinearGradient(pa[0], pa[1], pb[0], pb[1]);
+      g2.addColorStop(0,   `rgba(${lineC},${alpha})`);
+      g2.addColorStop(0.5, `rgba(${accentC},${isDark ? alpha*0.7 : alpha*0.92})`);
+      g2.addColorStop(1,   `rgba(${lineC},${alpha})`);
+      ctx.beginPath();
+      ctx.strokeStyle = g2;
+      ctx.moveTo(pa[0], pa[1]);
+      ctx.lineTo(pb[0], pb[1]);
+      ctx.stroke();
+    }
+    for (const p of proj2) {
+      const size  = Math.max(0.3, p[2] * (isDark ? 3.5 : 4.5));
+      const alpha = Math.max(0.05, (1 - p[3] / 740)) * (isDark ? 0.65 : 0.60);
+      ctx.beginPath();
+      ctx.arc(p[0], p[1], size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${dotC},${alpha})`;
+      ctx.fill();
+    }
+
     requestAnimationFrame(draw);
   }
 
@@ -399,13 +522,18 @@ function initCardTilt() {
       const rect = card.getBoundingClientRect();
       const x  = e.clientX - rect.left;
       const y  = e.clientY - rect.top;
-      const rX = ((y - rect.height / 2) / (rect.height / 2)) * -7;
-      const rY = ((x - rect.width  / 2) / (rect.width  / 2)) * 7;
-      card.style.transform = `perspective(900px) rotateX(${rX}deg) rotateY(${rY}deg) translateZ(8px)`;
+      const rX = ((y - rect.height / 2) / (rect.height / 2)) * -18;
+      const rY = ((x - rect.width  / 2) / (rect.width  / 2)) *  18;
+      card.style.transform = `perspective(800px) rotateX(${rX}deg) rotateY(${rY}deg) translateZ(28px)`;
+      // Specular highlight follows cursor like a real light source
+      card.style.setProperty("--mx", `${(x / rect.width  * 100).toFixed(1)}%`);
+      card.style.setProperty("--my", `${(y / rect.height * 100).toFixed(1)}%`);
     });
     card.addEventListener("mouseleave", () => {
-      card.style.transition = "transform 450ms cubic-bezier(0.16,1,0.3,1), box-shadow 450ms ease";
+      card.style.transition = "transform 500ms cubic-bezier(0.16,1,0.3,1), box-shadow 500ms ease";
       card.style.transform  = "";
+      card.style.removeProperty("--mx");
+      card.style.removeProperty("--my");
     });
   });
 }
@@ -735,6 +863,42 @@ function initMagneticButtons() {
   });
 }
 
+/* ── HERO MOUSE PARALLAX (depth layers) ── */
+function initHeroParallax() {
+  const photoCol    = document.querySelector('.hero-photo-col');
+  const heroContent = document.querySelector('.hero-content');
+  if (!photoCol || !heroContent) return;
+
+  let tx = 0, ty = 0, mx = 0, my = 0;
+
+  window.addEventListener('mousemove', (e) => {
+    mx = (e.clientX / window.innerWidth  - 0.5) * 2;
+    my = (e.clientY / window.innerHeight - 0.5) * 2;
+  }, { passive: true });
+
+  (function frame() {
+    tx += (mx - tx) * 0.055;
+    ty += (my - ty) * 0.055;
+    // Z components create genuine depth — photo is 60px closer to viewer than text
+    photoCol.style.transform    = `translate3d(${tx * 20}px, ${ty * 12}px, 60px)`;
+    heroContent.style.transform = `translate3d(${tx * 7}px,  ${ty * 4}px,  16px)`;
+    requestAnimationFrame(frame);
+  })();
+}
+
+/* ── HERO SCROLL SCALE (depth as you leave hero) ── */
+function initHeroScrollScale() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const scale = Math.max(0.93, 1 - y * 0.00011);
+    if (hero.classList.contains('is-visible')) {
+      hero.style.transform = `scale(${scale})`;
+    }
+  }, { passive: true });
+}
+
 /* ── REPO LINK CHIPS ── */
 document.addEventListener("click", (e) => {
   const chip = e.target.closest(".repo-link-chip");
@@ -759,3 +923,5 @@ initTimelineExpand();
 initParallax();
 initCounters();
 initMagneticButtons();
+initHeroParallax();
+initHeroScrollScale();
