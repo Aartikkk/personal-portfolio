@@ -139,7 +139,7 @@ const portfolioData = {
       tag: "Data Science · CASFER",
       title: "Peptide Absorbance Prediction",
       description:
-        "ML pipeline developed during the CASFER REU 2025 program at Texas Tech to predict UV-Vis absorbance from 15-amino acid peptide sequences. Engineered 40+ biophysical and compositional features — including GRAVY score, isoelectric point, dipeptide frequencies (PCA-compressed), and positional hydrophobicity — then trained and evaluated Random Forest (R² ≈ 0.86), Gradient Boosting, stacking ensembles, and voting classifiers across 96 experimentally tested sequences.",
+        "ML pipeline developed during the CASFER REU 2025 program at Case Western Reserve University to predict UV-Vis absorbance from 15-amino acid peptide sequences. Engineered 40+ biophysical and compositional features — including GRAVY score, isoelectric point, dipeptide frequencies (PCA-compressed), and positional hydrophobicity — then trained and evaluated Random Forest (R² ≈ 0.86), Gradient Boosting, stacking ensembles, and voting classifiers across 96 experimentally tested sequences.",
       stack: ["Python", "Random Forest", "Gradient Boosting", "K-Means", "scikit-learn"],
       liveUrl: "#",
       githubUrl: "https://github.com/Aartikkk/peptide-absorbance-prediction",
