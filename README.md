@@ -4,7 +4,7 @@ A clean, scroll-based personal portfolio built with React and Vite. Features smo
 
 ## Live Site
 
-<!-- Add your Vercel/Netlify link here after deployment -->
+https://aarti-khatri.vercel.app/
 
 ## Tech Stack
 
