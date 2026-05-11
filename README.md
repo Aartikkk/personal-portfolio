@@ -45,7 +45,9 @@ src/
     └── Icons.jsx               Inline SVG icon library
 
 public/
-└── assets/                     ← gitignored (local only — photos, resume, docs)
+└── assets/
+    ├── profile.jpg             Profile photo
+    └── docs/                   Resume, BMES poster, project reports
 ```
 
 ## Customization

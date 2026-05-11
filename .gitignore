@@ -3,6 +3,4 @@ dist
 .DS_Store
 *.local
 old/
-assets/
-public/assets/docs/
-public/assets/profile.jpg
+/assets/
