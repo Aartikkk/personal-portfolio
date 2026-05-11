@@ -1,45 +1,57 @@
 # Aarti Krishan Khatri — Portfolio
 
-A professional, scroll-based portfolio with dynamic animations, an interactive particle background, and light/dark theme support.
+A clean, scroll-based personal portfolio built with React and Vite. Features smooth Framer Motion animations, an interactive particle background, and a dark/light theme toggle.
 
 ## Live Site
 
-<!-- Add your Vercel link here after deployment -->
+<!-- Add your Vercel/Netlify link here after deployment -->
 
 ## Tech Stack
 
-- **React** + **Vite**
-- **Framer Motion** — scroll-triggered section animations
-- **Canvas API** — interactive particle background
+| Tool | Purpose |
+|---|---|
+| React + Vite | Component framework and build tool |
+| Framer Motion | Scroll-triggered section animations |
+| Canvas API | Interactive particle background |
 
-## Structure
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+## Project Structure
 
 ```
 src/
-  main.jsx              Entry point
-  App.jsx               App shell (theme state, navbar, sections, footer)
-  index.css             Stylesheet (dark + light theme variables)
-  components/
-    Navbar.jsx          Fixed navbar with theme toggle and mobile menu
-    Hero.jsx            Profile photo, name, tagline, action buttons
-    About.jsx           Bio + stat cards (GPA, role, location, graduation)
-    Experience.jsx      Vertical timeline with impact badges
-    Projects.jsx        2-column card grid with color-coded accents
-    Skills.jsx          Icon-based skill cards grouped by category
-    Conference.jsx      BMES 2025 research presentation
-    Education.jsx       Degree, awards, coursework
-    Contact.jsx         GitHub, LinkedIn, email links
-    ParticleBackground.jsx  Animated particle system (theme-aware)
-    Icons.jsx           Inline SVG icons
-  data/
-    portfolio.js        All portfolio content (edit to update)
-assets/                 ← gitignored (local only)
-  profile.jpg           Profile photo
-  docs/                 Resume, BMES poster, project reports
+├── main.jsx                    Entry point
+├── App.jsx                     App shell — theme state, section order, footer
+├── index.css                   Global styles and dark/light CSS variables
+├── data/
+│   └── portfolio.js            All content lives here — edit to update anything
+└── components/
+    ├── Navbar.jsx              Fixed nav with theme toggle and mobile menu
+    ├── Hero.jsx                Name, tagline, and CTA buttons
+    ├── About.jsx               Bio and stat cards (GPA, role, location)
+    ├── Highlights.jsx          Quick-glance highlight cards
+    ├── Experience.jsx          Vertical timeline with impact badges
+    ├── Projects.jsx            Card grid with color-coded tech accents
+    ├── Skills.jsx              Icon-based skill cards by category
+    ├── Education.jsx           Degree, honors, and coursework
+    ├── Conference.jsx          BMES 2025 research presentation
+    ├── Contact.jsx             GitHub, LinkedIn, and email links
+    ├── ParticleBackground.jsx  Animated canvas particle system
+    └── Icons.jsx               Inline SVG icon library
+
+public/
+└── assets/                     ← gitignored (local only — photos, resume, docs)
 ```
 
 ## Customization
 
-All content lives in `src/data/portfolio.js`. Edit that file to update experiences, projects, skills, etc.
+**Content** — edit `src/data/portfolio.js`. All text, links, dates, and descriptions are centralized there.
 
-Colors are controlled by CSS variables in `src/index.css` under `:root` (dark) and `[data-theme="light"]`.
+**Colors** — CSS variables in `src/index.css` under `:root` (dark theme) and `[data-theme="light"]`.
+
+**Sections** — add, remove, or reorder sections in `src/App.jsx`.

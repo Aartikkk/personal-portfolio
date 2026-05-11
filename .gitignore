@@ -4,3 +4,5 @@ dist
 *.local
 old/
 assets/
+public/assets/docs/
+public/assets/profile.jpg
