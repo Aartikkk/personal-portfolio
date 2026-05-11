@@ -1,55 +1,46 @@
-# Aarti Krishan Khatri — 3D Interactive Portfolio
+# Aarti Krishan Khatri — Portfolio
 
-An immersive 3D portfolio built with React Three Fiber, featuring a floating island workspace with interactive objects.
+A professional, scroll-based portfolio with dynamic animations, an interactive particle background, and light/dark theme support.
 
-## Quick Start
+## Live Site
 
-```bash
-npm install
-npm run dev
-```
-
-Then open http://localhost:5173
-
-## Deploy to Vercel
-
-```bash
-npm run build
-```
-
-Push to GitHub and Vercel will auto-deploy from the `dist/` folder. Make sure your Vercel project settings use:
-- **Build Command:** `npm run build`
-- **Output Directory:** `dist`
-- **Framework Preset:** Vite
+<!-- Add your Vercel link here after deployment -->
 
 ## Tech Stack
 
-- **React** + **Vite** — fast dev and build
-- **React Three Fiber** — React renderer for Three.js
-- **@react-three/drei** — helpful 3D primitives (OrbitControls, Float, Html, Stars)
-- **Framer Motion** — smooth panel animations and transitions
-- **GSAP** — camera animations on entry
-- **Three.js** — 3D engine
+- **React** + **Vite**
+- **Framer Motion** — scroll-triggered section animations
+- **Canvas API** — interactive particle background
 
 ## Structure
 
 ```
 src/
   main.jsx              Entry point
-  App.jsx               App shell (loading → intro → 3D scene)
-  index.css             All styles
+  App.jsx               App shell (theme state, navbar, sections, footer)
+  index.css             Stylesheet (dark + light theme variables)
   components/
-    Scene.jsx           Main 3D scene (lights, controls, floating rings)
-    FloatingIsland.jsx  Procedural island geometry + grass + rocks
-    DeskObjects.jsx     Interactive objects (laptop, coffee, books, trophy, etc.)
-    CoffeeParticles.jsx Ambient particle system
-    WarmFog.jsx         Volumetric cloud spheres
-    HUD.jsx             Navigation overlay
-    InfoPanel.jsx       Content panels (about, projects, experience, etc.)
-    LoadingScreen.jsx   Loading animation
-    IntroOverlay.jsx    "Enter Portfolio" splash
+    Navbar.jsx          Fixed navbar with theme toggle and mobile menu
+    Hero.jsx            Profile photo, name, tagline, action buttons
+    About.jsx           Bio + stat cards (GPA, role, location, graduation)
+    Experience.jsx      Vertical timeline with impact badges
+    Projects.jsx        2-column card grid with color-coded accents
+    Skills.jsx          Icon-based skill cards grouped by category
+    Conference.jsx      BMES 2025 research presentation
+    Education.jsx       Degree, awards, coursework
+    Contact.jsx         GitHub, LinkedIn, email links
+    ParticleBackground.jsx  Animated particle system (theme-aware)
+    Icons.jsx           Inline SVG icons
   data/
-    portfolio.js        All portfolio content (edit this to update info)
+    portfolio.js        All portfolio content (edit to update)
 public/
-  assets/               Images, PDFs, resume
+  assets/
+    profile.jpg         Profile photo
+    docs/               Resume, BMES poster, project reports
 ```
+
+## Customization
+
+All content lives in `src/data/portfolio.js`. Edit that file to update experiences, projects, skills, etc.
+
+Colors are controlled by CSS variables in `src/index.css` under `:root` (dark) and `[data-theme="light"]`.

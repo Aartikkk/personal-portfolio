@@ -1,7 +1,7 @@
 {
-  "name": "aarti-portfolio-3d",
+  "name": "aarti-portfolio",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,14 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@react-three/drei": "^9.114.0",
-    "@react-three/fiber": "^8.17.0",
-    "@react-three/postprocessing": "^2.16.0",
     "framer-motion": "^11.15.0",
-    "gsap": "^3.12.5",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "three": "^0.169.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.0",
