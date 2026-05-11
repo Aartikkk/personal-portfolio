@@ -33,10 +33,9 @@ src/
     Icons.jsx           Inline SVG icons
   data/
     portfolio.js        All portfolio content (edit to update)
-public/
-  assets/
-    profile.jpg         Profile photo
-    docs/               Resume, BMES poster, project reports
+assets/                 ← gitignored (local only)
+  profile.jpg           Profile photo
+  docs/                 Resume, BMES poster, project reports
 ```
 
 ## Customization
