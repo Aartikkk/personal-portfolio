@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { portfolioData } from '../data/portfolio'
+import SectionHeading from './SectionHeading'
 import {
   IconPython, IconJava, IconC, IconCpp, IconJS, IconSQL, IconR, IconCSharp,
   IconNumpy, IconPandas, IconScikit, IconOpenCV,
@@ -35,6 +36,12 @@ function SkillIcon({ iconName }) {
   return <Icon />
 }
 
+const CATEGORIES = [
+  { key: 'languages', label: 'Languages', accent: 'var(--accent-violet)' },
+  { key: 'frameworks', label: 'Libraries', accent: 'var(--accent-purple)' },
+  { key: 'tools', label: 'Tools', accent: 'var(--accent-green)' },
+]
+
 export default function Skills() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
@@ -42,63 +49,40 @@ export default function Skills() {
 
   return (
     <section className="section" id="skills" ref={ref}>
+      <SectionHeading label="Skills & Tools" title="Technical toolkit" />
+
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
+        className="skills-columns"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <p className="section-label">Skills & Tools</p>
-        <h2 className="section-title">Technical toolkit</h2>
+        {CATEGORIES.map(({ key, label, accent }) => (
+          <div key={key} className="skills-column" style={{ '--col-accent': accent }}>
+            <div className="skills-column-label">{label}</div>
+            <div className="skills-column-items">
+              {skills[key].map((skill) => (
+                <div key={skill.name} className="skills-column-item">
+                  <span className="skill-icon"><SkillIcon iconName={skill.icon} /></span>
+                  <span className="skill-name">{skill.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.1 }}
+        className="domain-section"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.6, delay: 0.3 }}
       >
-        <div className="skills-category">
-          <div className="skills-category-title">Languages</div>
-          <div className="skills-grid" style={{ marginTop: '0.8rem' }}>
-            {skills.languages.map((skill) => (
-              <div key={skill.name} className="skill-card">
-                <span className="skill-icon"><SkillIcon iconName={skill.icon} /></span>
-                <span className="skill-name">{skill.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="skills-category">
-          <div className="skills-category-title">Libraries & Frameworks</div>
-          <div className="skills-grid" style={{ marginTop: '0.8rem' }}>
-            {skills.frameworks.map((skill) => (
-              <div key={skill.name} className="skill-card">
-                <span className="skill-icon"><SkillIcon iconName={skill.icon} /></span>
-                <span className="skill-name">{skill.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="skills-category">
-          <div className="skills-category-title">Tools & Platforms</div>
-          <div className="skills-grid" style={{ marginTop: '0.8rem' }}>
-            {skills.tools.map((skill) => (
-              <div key={skill.name} className="skill-card">
-                <span className="skill-icon"><SkillIcon iconName={skill.icon} /></span>
-                <span className="skill-name">{skill.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="skills-category">
-          <div className="skills-category-title">Domains</div>
-          <div className="domain-chips">
-            {skills.domains.map((domain) => (
-              <span key={domain} className="domain-chip">{domain}</span>
-            ))}
-          </div>
+        <div className="skills-column-label">Domains</div>
+        <div className="domain-chips">
+          {skills.domains.map((domain) => (
+            <span key={domain} className="domain-chip">{domain}</span>
+          ))}
         </div>
       </motion.div>
     </section>

@@ -120,7 +120,7 @@ export const portfolioData = {
       description: "Machine learning pipelines to classify surface-enhanced Raman scattering spectra of biomineralized nanotags with 70%+ accuracy. Applied PCA, LDA, and KNN workflows for AI-driven disease diagnostics.",
       stack: ["Python", "Scikit-learn", "PCA", "LDA", "KNN"],
       githubUrl: "https://github.com/Aartikkk/sers-ml-classification",
-      color: "#818cf8",
+      color: "#e07a3a",
     },
     {
       tag: "Data Science",
@@ -128,7 +128,7 @@ export const portfolioData = {
       description: "ML pipeline to predict UV-Vis absorbance from 15-amino acid peptide sequences. Trained Random Forest (R² ≈ 0.86), Gradient Boosting, and stacking ensembles across 96 experimentally tested sequences.",
       stack: ["Python", "Random Forest", "XGBoost", "Scikit-learn"],
       githubUrl: "https://github.com/Aartikkk/peptide-absorbance-prediction",
-      color: "#c084fc",
+      color: "#c4956a",
     },
     {
       tag: "Data Engineering",
@@ -136,7 +136,7 @@ export const portfolioData = {
       description: "Automated Python pipelines (Pandas, NumPy, SciPy) to process LI-7815 gas exchange analyzer data, reducing manual analysis time by 80%. Automated segmentation, regression, and Excel report generation.",
       stack: ["Python", "Pandas", "SciPy", "Matplotlib", "OpenPyXL"],
       githubUrl: "https://github.com/Aartikkk/licor-li7815-analysis",
-      color: "#34d399",
+      color: "#7a8c72",
     },
     {
       tag: "Computer Vision",
@@ -145,7 +145,7 @@ export const portfolioData = {
       stack: ["Python", "OpenCV", "NumPy", "Computer Vision"],
       githubUrl: "https://github.com/Aartikkk/CS4331-005-Final-Project",
       reportUrl: "assets/docs/monocular-vo-report.pdf",
-      color: "#f472b6",
+      color: "#d4654a",
     },
   ],
   bmes: {

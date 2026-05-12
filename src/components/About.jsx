@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { portfolioData } from '../data/portfolio'
+import SectionHeading from './SectionHeading'
 
 export default function About() {
   const ref = useRef(null)
@@ -10,21 +10,17 @@ export default function About() {
 
   return (
     <section className="section" id="about" ref={ref}>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
-      >
-        <p className="section-label">About Me</p>
-        <h2 className="section-title">Building at the intersection of ML and software</h2>
-      </motion.div>
+      <SectionHeading
+        label="About Me"
+        title="Building at the intersection of ML and software"
+      />
 
       <div className="about-grid">
         <motion.div
           className="about-text"
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
           {about.map((para, i) => (
             <p key={i}>{para}</p>
@@ -33,9 +29,9 @@ export default function About() {
 
         <motion.div
           className="about-stats"
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
         >
           <div className="stat-card">
             <div className="stat-card-label">GPA</div>

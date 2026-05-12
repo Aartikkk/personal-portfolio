@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { portfolioData } from '../data/portfolio'
+import SectionHeading from './SectionHeading'
 
 export default function Conference() {
   const ref = useRef(null)
@@ -9,20 +10,13 @@ export default function Conference() {
 
   return (
     <section className="section" id="conference" ref={ref}>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
-      >
-        <p className="section-label">Research & Publications</p>
-        <h2 className="section-title">Conference presentation</h2>
-      </motion.div>
+      <SectionHeading label="Research & Publications" title="Conference presentation" />
 
       <motion.div
         className="conference-card"
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.15 }}
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.6, delay: 0.2 }}
       >
         <div className="conference-event">{bmes.event}</div>
         <h3 className="conference-title">{bmes.title}</h3>

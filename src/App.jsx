@@ -50,7 +50,7 @@ export default function App() {
         <Contact />
       </main>
       <footer className="footer">
-        Built by Aarti Krishan Khatri · 2025
+        Built by Aarti Krishan Khatri · 2026
       </footer>
     </>
   )
