@@ -3,14 +3,23 @@ import { useRef, useState } from 'react'
 import { portfolioData } from '../data/portfolio'
 import SectionHeading from './SectionHeading'
 
-function ProjectCard({ project, delay, featured, inView }) {
+const fadeUp = {
+  hidden: { opacity: 0, y: 35 },
+  show: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, delay: 0.15 + 0.1 * i, ease: [0.25, 0.1, 0.25, 1] },
+  }),
+}
+
+function ProjectCard({ project, index, featured, inView }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const x = (e.clientX - rect.left) / rect.width - 0.5
     const y = (e.clientY - rect.top) / rect.height - 0.5
-    setTilt({ x: y * -6, y: x * 6 })
+    setTilt({ x: y * -8, y: x * 8 })
   }
 
   const handleMouseLeave = () => setTilt({ x: 0, y: 0 })
@@ -23,9 +32,10 @@ function ProjectCard({ project, delay, featured, inView }) {
         transform: `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         transition: 'transform 0.2s ease-out',
       }}
-      initial={{ opacity: 0, y: 25 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      custom={index}
+      variants={fadeUp}
+      initial="hidden"
+      animate={inView ? 'show' : 'hidden'}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -59,7 +69,9 @@ export default function Projects() {
   const [featured, ...rest] = portfolioData.projects
 
   return (
-    <section className="section" id="projects" ref={ref}>
+    <section className="section section-patterned" id="projects" ref={ref}>
+      <div className="section-pattern projects-pattern" aria-hidden="true" />
+
       <SectionHeading
         label="Projects"
         title="Things I've built"
@@ -67,9 +79,9 @@ export default function Projects() {
       />
 
       <div className="bento-grid">
-        <ProjectCard project={featured} delay={0.2} featured inView={inView} />
+        <ProjectCard project={featured} index={0} featured inView={inView} />
         {rest.map((project, i) => (
-          <ProjectCard key={i} project={project} delay={0.3 + 0.1 * i} inView={inView} />
+          <ProjectCard key={i} project={project} index={i + 1} inView={inView} />
         ))}
       </div>
     </section>

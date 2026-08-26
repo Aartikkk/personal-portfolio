@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { portfolioData } from '../data/portfolio'
 
 const NAV_ITEMS = [
@@ -12,6 +12,27 @@ const NAV_ITEMS = [
 
 export default function Navbar({ scrolled, theme, onToggleTheme }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [activeHref, setActiveHref] = useState(NAV_ITEMS[0].href)
+
+  useEffect(() => {
+    const sections = NAV_ITEMS
+      .map((item) => document.querySelector(item.href))
+      .filter(Boolean)
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveHref(`#${entry.target.id}`)
+          }
+        })
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    )
+
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -19,7 +40,13 @@ export default function Navbar({ scrolled, theme, onToggleTheme }) {
       <ul className={`navbar-links ${mobileOpen ? 'open' : ''}`}>
         {NAV_ITEMS.map((item) => (
           <li key={item.href}>
-            <a href={item.href} onClick={() => setMobileOpen(false)}>{item.label}</a>
+            <a
+              href={item.href}
+              className={activeHref === item.href ? 'active' : ''}
+              onClick={() => setMobileOpen(false)}
+            >
+              {item.label}
+            </a>
           </li>
         ))}
       </ul>

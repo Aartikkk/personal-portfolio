@@ -1,32 +1,61 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion, useInView, useScroll } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
 import { portfolioData } from '../data/portfolio'
 import SectionHeading from './SectionHeading'
+import AnimatedNumber from './AnimatedNumber'
+import { useSpotlight } from '../hooks/useSpotlight'
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  show: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, delay: 0.15 + 0.12 * i, ease: [0.25, 0.1, 0.25, 1] },
+  }),
+}
 
 export default function Experience() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
+  const spotlight = useSpotlight()
+
+  const scrollRef = useRef(null)
+  const { scrollXProgress } = useScroll({ container: scrollRef })
+  const [activeCard, setActiveCard] = useState(0)
+  const lastCard = portfolioData.experience.length - 1
+
+  useEffect(() => {
+    return scrollXProgress.on('change', (v) => {
+      setActiveCard(Math.round(v * lastCard))
+    })
+  }, [lastCard])
 
   return (
-    <section className="section" id="experience" ref={ref}>
+    <section className="section section-patterned" id="experience" ref={ref}>
+      <div className="section-pattern experience-pattern" aria-hidden="true" />
+
       <SectionHeading
         label="Experience"
         title="Research & industry experience"
-        subtitle="Four research and internship roles focused on ML, data science, scientific computing, and lab automation."
+        subtitle="Five research and industry roles spanning ML, data science, scientific computing, lab automation, and enterprise AI workflows."
       />
 
-      <div className="exp-scroll-wrapper">
+      <div className="exp-scroll-wrapper" ref={scrollRef}>
         <div className="exp-scroll-track">
           {portfolioData.experience.map((exp, i) => (
             <motion.div
               key={i}
               className="exp-card"
-              initial={{ opacity: 0, x: 30 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 + 0.1 * i, ease: [0.25, 0.1, 0.25, 1] }}
+              custom={i}
+              variants={fadeUp}
+              initial="hidden"
+              animate={inView ? 'show' : 'hidden'}
+              {...spotlight}
             >
               {exp.impact && (
-                <div className="exp-card-stat">{exp.impact}</div>
+                <div className="exp-card-stat">
+                  <AnimatedNumber value={exp.impact} active={inView} />
+                </div>
               )}
               <div className="exp-card-period">{exp.period}</div>
               <div className="exp-card-role">{exp.role}</div>
@@ -35,6 +64,12 @@ export default function Experience() {
             </motion.div>
           ))}
         </div>
+      </div>
+
+      <div className="exp-scroll-dots" aria-hidden="true">
+        {portfolioData.experience.map((_, i) => (
+          <span key={i} className={`exp-scroll-dot ${i === activeCard ? 'active' : ''}`} />
+        ))}
       </div>
     </section>
   )

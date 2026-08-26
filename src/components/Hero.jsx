@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { portfolioData } from '../data/portfolio'
+import MagneticLink from './MagneticLink'
 
 // Orchestrated stagger — each element enters in sequence
 const container = {
@@ -91,15 +92,15 @@ export default function Hero() {
           </motion.p>
 
           <motion.div className="hero-actions" variants={fadeUp}>
-            <a href={hero.resumeUrl} target="_blank" rel="noreferrer" className="btn btn-primary">
+            <MagneticLink href={hero.resumeUrl} target="_blank" rel="noreferrer" className="btn btn-primary">
               View Resume ↗
-            </a>
-            <a href={hero.githubUrl} target="_blank" rel="noreferrer" className="btn btn-outline">
+            </MagneticLink>
+            <MagneticLink href={hero.githubUrl} target="_blank" rel="noreferrer" className="btn btn-outline">
               GitHub →
-            </a>
-            <a href={hero.linkedinUrl} target="_blank" rel="noreferrer" className="btn btn-outline">
+            </MagneticLink>
+            <MagneticLink href={hero.linkedinUrl} target="_blank" rel="noreferrer" className="btn btn-outline">
               LinkedIn →
-            </a>
+            </MagneticLink>
           </motion.div>
         </motion.div>
 

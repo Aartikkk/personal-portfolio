@@ -2,6 +2,17 @@ import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { portfolioData } from '../data/portfolio'
 import SectionHeading from './SectionHeading'
+import MagneticLink from './MagneticLink'
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+}
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 25 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.25, 0.1, 0.25, 1] } },
+}
 
 export default function Conference() {
   const ref = useRef(null)
@@ -9,32 +20,34 @@ export default function Conference() {
   const { bmes } = portfolioData
 
   return (
-    <section className="section" id="conference" ref={ref}>
+    <section className="section section-patterned" id="conference" ref={ref}>
+      <div className="section-pattern conference-pattern" aria-hidden="true" />
+
       <SectionHeading label="Research & Publications" title="Conference presentation" />
 
       <motion.div
         className="conference-card"
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        variants={stagger}
+        initial="hidden"
+        animate={inView ? 'show' : 'hidden'}
       >
-        <div className="conference-event">{bmes.event}</div>
-        <h3 className="conference-title">{bmes.title}</h3>
-        <p className="conference-summary">{bmes.summary}</p>
+        <motion.div className="conference-event" variants={fadeUp}>{bmes.event}</motion.div>
+        <motion.h3 className="conference-title" variants={fadeUp}>{bmes.title}</motion.h3>
+        <motion.p className="conference-summary" variants={fadeUp}>{bmes.summary}</motion.p>
 
-        <ul className="conference-highlights">
+        <motion.ul className="conference-highlights" variants={fadeUp}>
           {bmes.highlights.map((h, i) => (
             <li key={i}>{h}</li>
           ))}
-        </ul>
+        </motion.ul>
 
-        <div className="conference-actions">
+        <motion.div className="conference-actions" variants={fadeUp}>
           {bmes.posterPreview && (
-            <a href={bmes.posterPreview} target="_blank" rel="noreferrer" className="btn btn-primary">
+            <MagneticLink href={bmes.posterPreview} target="_blank" rel="noreferrer" className="btn btn-primary">
               View Poster Preview →
-            </a>
+            </MagneticLink>
           )}
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   )

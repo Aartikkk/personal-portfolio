@@ -37,10 +37,51 @@ function SkillIcon({ iconName }) {
 }
 
 const CATEGORIES = [
-  { key: 'languages', label: 'Languages', accent: 'var(--accent-violet)' },
-  { key: 'frameworks', label: 'Libraries', accent: 'var(--accent-purple)' },
-  { key: 'tools', label: 'Tools', accent: 'var(--accent-green)' },
+  { key: 'languages', label: 'Languages', accent: 'var(--accent-violet)', icon: '</>' },
+  { key: 'frameworks', label: 'Libraries', accent: 'var(--accent-purple)', icon: '{...}' },
+  { key: 'tools', label: 'Tools', accent: 'var(--accent-green)', icon: '>' },
 ]
+
+const cardSlideVariant = {
+  hidden: { opacity: 0, y: -80, scale: 0.95 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.9,
+      delay: 0.2 + i * 0.3,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+}
+
+const itemVariant = {
+  hidden: { opacity: 0, x: -12 },
+  visible: {
+    opacity: 1,
+    x: 0,
+  },
+}
+
+const itemsContainerVariant = {
+  hidden: {},
+  visible: (i) => ({
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.5 + i * 0.3,
+    },
+  }),
+}
+
+const chipVariant = {
+  hidden: { opacity: 0, y: -30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, delay: 1.2, ease: [0.16, 1, 0.3, 1] },
+  },
+}
 
 export default function Skills() {
   const ref = useRef(null)
@@ -48,37 +89,56 @@ export default function Skills() {
   const { skills } = portfolioData
 
   return (
-    <section className="section" id="skills" ref={ref}>
+    <section className="section skills-section" id="skills" ref={ref}>
+      <div className="tools-pattern-bg" aria-hidden="true" />
+
       <SectionHeading label="Skills & Tools" title="Technical toolkit" />
 
-      <motion.div
-        className="skills-columns"
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        {CATEGORIES.map(({ key, label, accent }) => (
-          <div key={key} className="skills-column" style={{ '--col-accent': accent }}>
-            <div className="skills-column-label">{label}</div>
-            <div className="skills-column-items">
+      <div className="skills-columns">
+        {CATEGORIES.map(({ key, label, accent, icon }, index) => (
+          <motion.div
+            key={key}
+            className="skills-card"
+            style={{ '--col-accent': accent }}
+            custom={index}
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+            variants={cardSlideVariant}
+          >
+            <div className="skills-card-header">
+              <span className="skills-card-icon">{icon}</span>
+              <span className="skills-card-label">{label}</span>
+            </div>
+            <motion.div
+              className="skills-card-items"
+              custom={index}
+              initial="hidden"
+              animate={inView ? 'visible' : 'hidden'}
+              variants={itemsContainerVariant}
+            >
               {skills[key].map((skill) => (
-                <div key={skill.name} className="skills-column-item">
+                <motion.div
+                  key={skill.name}
+                  className="skills-card-item"
+                  variants={itemVariant}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
                   <span className="skill-icon"><SkillIcon iconName={skill.icon} /></span>
                   <span className="skill-name">{skill.name}</span>
-                </div>
+                </motion.div>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         ))}
-      </motion.div>
+      </div>
 
       <motion.div
         className="domain-section"
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.6, delay: 0.3 }}
+        initial="hidden"
+        animate={inView ? 'visible' : 'hidden'}
+        variants={chipVariant}
       >
-        <div className="skills-column-label">Domains</div>
+        <div className="skills-card-label">Domains</div>
         <div className="domain-chips">
           {skills.domains.map((domain) => (
             <span key={domain} className="domain-chip">{domain}</span>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import Navbar from './components/Navbar'
+import ScrollProgress from './components/ScrollProgress'
 import Hero from './components/Hero'
 import About from './components/About'
 import Highlights from './components/Highlights'
@@ -37,6 +38,7 @@ export default function App() {
   return (
     <>
       <ParticleBackground theme={theme} />
+      <ScrollProgress />
       <Navbar scrolled={scrolled} theme={theme} onToggleTheme={toggleTheme} />
       <main className="page-content">
         <Hero />

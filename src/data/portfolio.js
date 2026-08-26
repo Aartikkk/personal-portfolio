@@ -36,6 +36,13 @@ export const portfolioData = {
   ],
   experience: [
     {
+      period: "May 2026 – Aug 2026",
+      role: "Enterprise Applications Intern",
+      organization: "Aramco Americas",
+      detail: "Built invoiceAIExtractor, an LLM-driven synthesis workflow on Azure OpenAI integrated via REST API, cutting invoice/receipt processing time across Saudi Aramco's global assignment program from about a week to 10 minutes. Deployed production LLM agents (Salesforce Agentforce, Microsoft Copilot Studio) and automated validation/anonymization of large-scale log datasets pulled via SSH.",
+      impact: "1 week → 10 min",
+    },
+    {
       period: "Oct 2025 – Present",
       role: "Research Assistant",
       organization: "Dept. of Plant & Soil Sciences, Texas Tech University",
@@ -146,6 +153,13 @@ export const portfolioData = {
       githubUrl: "https://github.com/Aartikkk/CS4331-005-Final-Project",
       reportUrl: "assets/docs/monocular-vo-report.pdf",
       color: "#d4654a",
+    },
+    {
+      tag: "Data & BI",
+      title: "AI-Enabled HR Cost Intelligence Solution",
+      description: "End-to-end data pipeline for Aramco Americas HR replacing a manual Excel budget process — secure OneDrive upload → SQL Server processing → Power BI dashboards → a Copilot Studio LLM agent giving leadership self-serve, conversational access to cost data. Projected 75% system improvement and 90% reduction in per-cycle processing time.",
+      stack: ["SQL Server", "Power BI", "Copilot Studio", "Data Modeling"],
+      color: "#c9a84c",
     },
   ],
   bmes: {
