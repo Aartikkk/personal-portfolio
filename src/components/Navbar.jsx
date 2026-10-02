@@ -11,6 +11,7 @@ const NAV_ITEMS = [
 
 export default function Navbar({ theme, onToggleTheme }) {
   const [active, setActive] = useState('')
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const sections = NAV_ITEMS.map((i) => document.querySelector(i.href)).filter(Boolean)
@@ -26,16 +27,30 @@ export default function Navbar({ theme, onToggleTheme }) {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e) => e.key === 'Escape' && setMenuOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [menuOpen])
+
   return (
     <header className="topbar">
       <div className="topbar-inner wrap">
-        <a href="#top" className="mono topbar-brand">A.K. Khatri</a>
-        <nav className="topbar-nav" aria-label="Primary">
+        <a href="#top" className="mono topbar-brand" onClick={() => setMenuOpen(false)}>
+          A.K. Khatri
+        </a>
+        <nav
+          id="primary-nav"
+          className={`topbar-nav ${menuOpen ? 'open' : ''}`}
+          aria-label="Primary"
+        >
           {NAV_ITEMS.map((item) => (
             <a
               key={item.href}
               href={item.href}
               className={`mono ${active === item.href ? 'active' : ''}`}
+              onClick={() => setMenuOpen(false)}
             >
               {item.label}
             </a>
@@ -47,6 +62,14 @@ export default function Navbar({ theme, onToggleTheme }) {
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
           {theme === 'dark' ? 'Paper' : 'Ink'}
+        </button>
+        <button
+          className="mono menu-toggle"
+          onClick={() => setMenuOpen((o) => !o)}
+          aria-expanded={menuOpen}
+          aria-controls="primary-nav"
+        >
+          {menuOpen ? 'Close' : 'Menu'}
         </button>
       </div>
     </header>

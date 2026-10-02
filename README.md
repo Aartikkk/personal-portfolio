@@ -1,6 +1,6 @@
 # Aarti Krishan Khatri — Portfolio
 
-A personal portfolio with a warm, editorial aesthetic. Built with React and Vite, featuring orchestrated Framer Motion animations, a bento-grid project layout, and a dark/light theme toggle.
+A personal portfolio set like a research journal: paper and ink, one vermilion accent, oversized serif type, and structure shown through hairline rules, numbered sections, and ruled tables instead of cards. Built with React and Vite, with restrained Framer Motion reveals and a paper/ink theme toggle.
 
 ## Live Site
 
@@ -11,12 +11,15 @@ https://aarti-khatri.vercel.app/
 | Tool | Purpose |
 |---|---|
 | React 18 + Vite 5 | Component framework and build tool |
-| Framer Motion | Orchestrated entrance animations, clip-path reveals, perspective tilt |
-| Fraunces + Outfit + JetBrains Mono | Typography via Google Fonts |
+| Framer Motion | Heading slide-in, scroll reveals, project row expand (all respect `prefers-reduced-motion`) |
+| Instrument Serif + Hanken Grotesk + IBM Plex Mono | Typography via Google Fonts |
 
 ## Design
 
-The site uses a warm charcoal and cream palette with burnt orange, sage green, and gold accents. Background texture comes from an SVG noise grain filter and radial glows rather than canvas particles. Animations are scroll-triggered and orchestrated per section — word-by-word hero reveal, clip-path wipes on headings, staggered card entrances, and mouse-tracking 3D tilt on project cards.
+- **Palette** — warm paper (`#f1ece2`) and near-black ink with a single vermilion accent. Dark mode ("Ink") inverts the same system. The theme follows the visitor's OS setting on first load and is remembered afterwards.
+- **Type** — Instrument Serif for display and key figures, Hanken Grotesk for body text, IBM Plex Mono for labels, dates, and metadata.
+- **Structure** — numbered sections (§ 01–07) on a 12-column grid, with a sticky section label on the left. No cards, shadows, glows, or background effects.
+- **Content layout** — Experience is a ruled ledger with the measured result in the right-hand column; Projects is an expandable index; Skills and Education are typeset lists; the BMES poster is a framed figure.
 
 ## Getting Started
 
@@ -31,23 +34,21 @@ npm run dev
 src/
 ├── main.jsx                    Entry point
 ├── App.jsx                     App shell — theme state, section order, footer
-├── index.css                   Global styles, dark/light CSS variables, responsive
+├── index.css                   Design tokens, layout, dark theme, responsive rules
 ├── data/
 │   └── portfolio.js            All content — edit to update anything
 └── components/
-    ├── Navbar.jsx              Fixed nav with theme toggle and mobile menu
-    ├── Hero.jsx                Asymmetric grid with word-by-word reveal and SVG underline
-    ├── About.jsx               Bio and stat cards (GPA, role, location)
-    ├── Highlights.jsx          Scrolling tech marquee strip
-    ├── Experience.jsx          Horizontal scroll cards with impact stats
-    ├── Projects.jsx            Bento grid with featured card and 3D tilt hover
-    ├── Skills.jsx              Three-column layout with accent borders
-    ├── Education.jsx           Degree, honors, and coursework chips
-    ├── Conference.jsx          BMES 2025 research presentation
-    ├── Contact.jsx             GitHub, LinkedIn, and email links
-    ├── SectionHeading.jsx      Reusable clip-path wipe-in heading component
-    ├── ParticleBackground.jsx  SVG grain filter + radial glow layers
-    └── Icons.jsx               Inline SVG icon library
+    ├── Navbar.jsx              Fixed top bar, theme toggle, mobile menu
+    ├── Hero.jsx                Oversized name, intro, headline metrics, photo figure
+    ├── Section.jsx             Shared numbered section shell (§ label + title)
+    ├── Reveal.jsx              Scroll-reveal wrapper (skipped for reduced motion)
+    ├── About.jsx               Bio and fact list
+    ├── Experience.jsx          Ruled ledger with a result column
+    ├── Projects.jsx            Expandable project index
+    ├── Skills.jsx              Typeset skill columns and domains
+    ├── Conference.jsx          BMES 2025 poster figure, abstract, and results
+    ├── Education.jsx           Degree, honors, and coursework
+    └── Contact.jsx             Email and profile links
 
 public/
 └── assets/
@@ -57,8 +58,8 @@ public/
 
 ## Customization
 
-**Content** — edit `src/data/portfolio.js`. All text, links, dates, and descriptions are centralized there.
+**Content** — edit `src/data/portfolio.js`. All text, links, dates, and descriptions are centralized there. Each experience entry has a `metric` and `metricLabel` that appear in the ledger and the hero.
 
-**Colors** — CSS variables in `src/index.css` under `:root` (dark) and `[data-theme="light"]`. The palette uses warm earth tones: burnt orange (`--accent-violet`), warm tan (`--accent-purple`), sage green (`--accent-green`), terra cotta (`--accent-pink`), and gold (`--accent-gold`).
+**Colors** — CSS variables at the top of `src/index.css` under `:root` (paper) and `[data-theme='dark']` (ink). `--accent` is the only accent colour.
 
-**Sections** — add, remove, or reorder sections in `src/App.jsx`.
+**Sections** — add, remove, or reorder sections in `src/App.jsx`, and keep the `NAV_ITEMS` list in `Navbar.jsx` in sync.

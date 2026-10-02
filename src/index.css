@@ -109,6 +109,14 @@ ul, ol { list-style: none; }
   transition: background 0.15s, color 0.15s;
 }
 .theme-toggle:hover { background: var(--ink); color: var(--paper); }
+.menu-toggle {
+  display: none;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--rule);
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
 
 /* ---------- Hero ---------- */
 .hero { padding-top: calc(var(--topbar) + clamp(2rem, 6vw, 4.5rem)); padding-bottom: clamp(3rem, 7vw, 6rem); }
@@ -381,7 +389,27 @@ ul, ol { list-style: none; }
 
 @media (max-width: 720px) {
   body { font-size: 1rem; }
-  .topbar-nav { display: none; }
+  .menu-toggle { display: inline-block; }
+  .topbar-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem var(--gutter) 1rem;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+  .topbar-nav.open { display: flex; }
+  .topbar-nav a {
+    font-size: 0.9rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--hair);
+    color: var(--ink);
+  }
+  .topbar-nav a.active { border-bottom-color: var(--accent); }
   .plate { grid-column: 1 / -1; max-width: 22rem; }
   .skills-cols, .edu-cols { grid-template-columns: 1fr; }
   .index-head { grid-template-columns: 2rem minmax(0, 1fr) 1.25rem; }
