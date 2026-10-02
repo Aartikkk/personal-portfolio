@@ -2,11 +2,11 @@ export const portfolioData = {
   siteTitle: "Aarti Krishan Khatri | Portfolio",
   brandName: "Aarti Krishan Khatri",
   hero: {
-    status: "Texas Tech University · CS Honors · Dec 2026",
+    status: "Lubbock, Texas · Graduating December 2026",
     name: "Aarti Krishan Khatri",
-    tagline: "ML Researcher · Software Builder · Data Engineer",
+    tagline: "Machine learning, data engineering, and the labs that need them.",
     description:
-      "Computer Science student at Texas Tech combining machine learning research, data engineering, and software development to build things that actually work.",
+      "Honors computer science student at Texas Tech. I build ML and data systems for lab science and the enterprise — most recently an Azure OpenAI workflow that took invoice processing at Aramco Americas from about a week to ten minutes.",
     githubUrl: "https://github.com/Aartikkk",
     linkedinUrl: "https://www.linkedin.com/in/aarti-krishan-khatri-5104782aa",
     resumeUrl: "assets/docs/resume.pdf",
@@ -16,9 +16,9 @@ export const portfolioData = {
     alt: "Portrait of Aarti Krishan Khatri",
   },
   about: [
-    "I am an honors Computer Science student at Texas Tech University with a Mathematics minor and a current GPA of 3.8. I care about combining rigorous analytical thinking with practical software development that solves real problems.",
-    "My experience spans machine learning research, automation in laboratory environments, data science, and student-facing university work. I enjoy working in spaces where software meets experimentation, analysis, and impact.",
-    "I am especially interested in software engineering, AI research, data science, and backend systems.",
+    "I'm an honors Computer Science student at Texas Tech with a Mathematics minor and a 3.8 GPA. I like problems where rigorous analysis has to survive contact with real, messy data.",
+    "My work so far has been in spectroscopy and gas-exchange labs, a lab-automation robot, soil and peptide modelling, and enterprise AI at Aramco Americas. The common thread is software sitting right next to an experiment.",
+    "I'm most interested in software engineering, AI research, data science, and backend systems.",
   ],
   profile: {
     gpa: "3.8 / 4.0",
@@ -41,6 +41,8 @@ export const portfolioData = {
       organization: "Aramco Americas",
       detail: "Built invoiceAIExtractor, an LLM-driven synthesis workflow on Azure OpenAI integrated via REST API, cutting invoice/receipt processing time across Saudi Aramco's global assignment program from about a week to 10 minutes. Deployed production LLM agents (Salesforce Agentforce, Microsoft Copilot Studio) and automated validation/anonymization of large-scale log datasets pulled via SSH.",
       impact: "1 week → 10 min",
+      metric: "1 wk → 10 min",
+      metricLabel: "invoice processing time",
     },
     {
       period: "Oct 2025 – Present",
@@ -48,6 +50,8 @@ export const portfolioData = {
       organization: "Dept. of Plant & Soil Sciences, Texas Tech University",
       detail: "Developed automated data analysis pipelines in Python (Pandas, NumPy, SciPy) to process LI-7815 gas exchange analyzer data, reducing manual analysis time by 80%. Built linear regression models and statistical testing workflows to quantify CO₂ and H₂O flux rates.",
       impact: "80% faster analysis",
+      metric: "−80%",
+      metricLabel: "manual analysis time",
     },
     {
       period: "Oct 2024 – Oct 2025",
@@ -55,6 +59,8 @@ export const portfolioData = {
       organization: "Srivastava Lab, Texas Tech University",
       detail: "Analyzed biomolecular spectral data of cancer exosomes, improving nanosensor sensitivity by 15%. Built and optimized models such as LDA, PCA-LDA, and PCA-KNN, achieving over 70% prediction accuracy for disease diagnostics.",
       impact: "70%+ accuracy",
+      metric: "70%+",
+      metricLabel: "diagnostic prediction accuracy",
     },
     {
       period: "Jun 2025 – Jul 2025",
@@ -62,6 +68,8 @@ export const portfolioData = {
       organization: "CASFER, Case Western Reserve University",
       detail: "Mapped global soil nutrient patterns with Python and R using kriging interpolation. Built Random Forest, Gradient Boosting, XGBoost, and Ridge Regression models to predict peptide UV-Vis absorbance.",
       impact: "R² ≈ 0.86",
+      metric: "R² 0.86",
+      metricLabel: "peptide absorbance model",
     },
     {
       period: "Jun 2024 – Jul 2024",
@@ -69,6 +77,8 @@ export const portfolioData = {
       organization: "CASFER, Texas Tech University",
       detail: "Automated 50+ laboratory processes with the Opentrons OT-2 robot, reducing manual workload by 90%. Developed Python-based liquid handling protocols with ±0.2 µL accuracy.",
       impact: "90% less manual work",
+      metric: "−90%",
+      metricLabel: "manual lab workload",
     },
   ],
   skills: {
@@ -189,7 +199,7 @@ export const portfolioData = {
     { label: "Personal Email", value: "aartikrk4@gmail.com", url: "mailto:aartikrk4@gmail.com" },
   ],
   contact: {
-    text: "The best way to reach me is by email. You can also explore my GitHub and connect with me on LinkedIn.",
+    text: "Email is the best way to reach me. I'm graduating in December 2026 and open to software, ML, and data roles.",
     email: "aarkhatr@ttu.edu",
   },
 }

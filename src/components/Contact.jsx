@@ -1,63 +1,23 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
 import { portfolioData } from '../data/portfolio'
-import SectionHeading from './SectionHeading'
-import { IconGitHub, IconLinkedIn, IconEmail } from './Icons'
-import { useSpotlight } from '../hooks/useSpotlight'
-
-const iconMap = {
-  GitHub: IconGitHub,
-  LinkedIn: IconLinkedIn,
-  'TTU Email': IconEmail,
-  'Personal Email': IconEmail,
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 25 },
-  show: (i) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, delay: 0.2 + 0.1 * i, ease: [0.25, 0.1, 0.25, 1] },
-  }),
-}
+import Section from './Section'
+import Reveal from './Reveal'
 
 export default function Contact() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
-  const spotlight = useSpotlight()
-
+  const { contact, links } = portfolioData
   return (
-    <section className="section contact-section section-patterned" id="contact" ref={ref}>
-      <div className="section-pattern contact-pattern" aria-hidden="true" />
-
-      <SectionHeading
-        label="Contact"
-        title="Let's connect"
-        subtitle={portfolioData.contact.text}
-      />
-
-      <div className="contact-links">
-        {portfolioData.links.map((link, i) => {
-          const Icon = iconMap[link.label] || IconEmail
-          return (
-            <motion.a
-              key={link.label}
-              href={link.url}
-              target="_blank"
-              rel="noreferrer"
-              className="contact-link"
-              custom={i}
-              variants={fadeUp}
-              initial="hidden"
-              animate={inView ? 'show' : 'hidden'}
-              {...spotlight}
-            >
-              <span className="contact-link-icon"><Icon /></span>
-              {link.label}
-            </motion.a>
-          )
-        })}
-      </div>
-    </section>
+    <Section id="contact" num="07" label="Contact" title={<>Say <em>hello.</em></>}>
+      <Reveal as="p" className="contact-text">{contact.text}</Reveal>
+      <Reveal as="a" className="contact-email" href={`mailto:${contact.email}`}>
+        {contact.email}
+      </Reveal>
+      <Reveal as="ul" className="contact-list">
+        {links.map((l) => (
+          <li key={l.label}>
+            <span className="mono">{l.label}</span>
+            <a href={l.url} target="_blank" rel="noreferrer">{l.value} ↗</a>
+          </li>
+        ))}
+      </Reveal>
+    </Section>
   )
 }

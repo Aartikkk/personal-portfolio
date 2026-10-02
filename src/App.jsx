@@ -1,34 +1,30 @@
 import { useState, useEffect, useCallback } from 'react'
 import Navbar from './components/Navbar'
-import ScrollProgress from './components/ScrollProgress'
 import Hero from './components/Hero'
 import About from './components/About'
-import Highlights from './components/Highlights'
 import Experience from './components/Experience'
 import Projects from './components/Projects'
 import Skills from './components/Skills'
 import Conference from './components/Conference'
 import Education from './components/Education'
 import Contact from './components/Contact'
-import ParticleBackground from './components/ParticleBackground'
+
+const STORAGE_KEY = 'theme-v2'
+
+function initialTheme() {
+  try {
+    const saved = window.localStorage.getItem(STORAGE_KEY)
+    if (saved === 'light' || saved === 'dark') return saved
+  } catch {}
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
 
 export default function App() {
-  const [scrolled, setScrolled] = useState(false)
-  const [theme, setTheme] = useState(() => {
-    // Check if user had a preference saved
-    const saved = typeof window !== 'undefined' && window.localStorage?.getItem('theme')
-    return saved || 'dark'
-  })
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  const [theme, setTheme] = useState(initialTheme)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
-    try { window.localStorage?.setItem('theme', theme) } catch {}
+    try { window.localStorage.setItem(STORAGE_KEY, theme) } catch {}
   }, [theme])
 
   const toggleTheme = useCallback(() => {
@@ -37,13 +33,10 @@ export default function App() {
 
   return (
     <>
-      <ParticleBackground theme={theme} />
-      <ScrollProgress />
-      <Navbar scrolled={scrolled} theme={theme} onToggleTheme={toggleTheme} />
-      <main className="page-content">
+      <Navbar theme={theme} onToggleTheme={toggleTheme} />
+      <main>
         <Hero />
         <About />
-        <Highlights />
         <Experience />
         <Projects />
         <Skills />
@@ -51,8 +44,9 @@ export default function App() {
         <Education />
         <Contact />
       </main>
-      <footer className="footer">
-        Built by Aarti Krishan Khatri · 2026
+      <footer className="footer wrap mono">
+        <span>Aarti Krishan Khatri</span>
+        <span>Set in Instrument Serif, Hanken Grotesk &amp; IBM Plex Mono · 2026</span>
       </footer>
     </>
   )

@@ -1,72 +1,77 @@
 import { useState, useEffect } from 'react'
-import { portfolioData } from '../data/portfolio'
 
 const NAV_ITEMS = [
   { label: 'About', href: '#about' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
   { label: 'Skills', href: '#skills' },
-  { label: 'Research', href: '#conference' },
+  { label: 'Research', href: '#research' },
   { label: 'Contact', href: '#contact' },
 ]
 
-export default function Navbar({ scrolled, theme, onToggleTheme }) {
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [activeHref, setActiveHref] = useState(NAV_ITEMS[0].href)
+export default function Navbar({ theme, onToggleTheme }) {
+  const [active, setActive] = useState('')
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const sections = NAV_ITEMS
-      .map((item) => document.querySelector(item.href))
-      .filter(Boolean)
-
+    const sections = NAV_ITEMS.map((i) => document.querySelector(i.href)).filter(Boolean)
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveHref(`#${entry.target.id}`)
-          }
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(`#${e.target.id}`)
         })
       },
       { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
     )
-
-    sections.forEach((section) => observer.observe(section))
+    sections.forEach((s) => observer.observe(s))
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e) => e.key === 'Escape' && setMenuOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [menuOpen])
+
   return (
-    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-      <a href="#" className="navbar-brand">{portfolioData.brandName}</a>
-      <ul className={`navbar-links ${mobileOpen ? 'open' : ''}`}>
-        {NAV_ITEMS.map((item) => (
-          <li key={item.href}>
+    <header className="topbar">
+      <div className="topbar-inner wrap">
+        <a href="#top" className="mono topbar-brand" onClick={() => setMenuOpen(false)}>
+          A.K. Khatri
+        </a>
+        <nav
+          id="primary-nav"
+          className={`topbar-nav ${menuOpen ? 'open' : ''}`}
+          aria-label="Primary"
+        >
+          {NAV_ITEMS.map((item) => (
             <a
+              key={item.href}
               href={item.href}
-              className={activeHref === item.href ? 'active' : ''}
-              onClick={() => setMobileOpen(false)}
+              className={`mono ${active === item.href ? 'active' : ''}`}
+              onClick={() => setMenuOpen(false)}
             >
               {item.label}
             </a>
-          </li>
-        ))}
-      </ul>
-      <div className="navbar-right">
+          ))}
+        </nav>
         <button
-          className="theme-toggle"
+          className="mono theme-toggle"
           onClick={onToggleTheme}
-          aria-label="Toggle theme"
-          title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
-          {theme === 'dark' ? '☀' : '☾'}
+          {theme === 'dark' ? 'Paper' : 'Ink'}
         </button>
         <button
-          className="navbar-mobile-toggle"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
+          className="mono menu-toggle"
+          onClick={() => setMenuOpen((o) => !o)}
+          aria-expanded={menuOpen}
+          aria-controls="primary-nav"
         >
-          {mobileOpen ? '✕' : '☰'}
+          {menuOpen ? 'Close' : 'Menu'}
         </button>
       </div>
-    </nav>
+    </header>
   )
 }

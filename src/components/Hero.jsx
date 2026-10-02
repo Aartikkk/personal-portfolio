@@ -1,118 +1,58 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { portfolioData } from '../data/portfolio'
-import MagneticLink from './MagneticLink'
 
-// Orchestrated stagger — each element enters in sequence
-const container = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
-  },
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
-}
-
-const wordReveal = {
-  hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0 },
-}
-
-const drawLine = {
-  hidden: { pathLength: 0, opacity: 0 },
-  show: {
-    pathLength: 1,
-    opacity: 0.6,
-    transition: { duration: 0.8, ease: 'easeOut', delay: 0.6 },
-  },
-}
+const LINES = ['Aarti Krishan', 'Khatri']
 
 export default function Hero() {
-  const { hero, photo } = portfolioData
-  const nameWords = hero.name.split(' ')
+  const { hero, photo, profile } = portfolioData
+  const reduce = useReducedMotion()
 
   return (
-    <section className="hero" id="hero">
-      <div className="hero-inner">
-        <motion.div
-          className="hero-text"
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
-          {/* Status badge */}
-          <motion.span className="hero-status" variants={fadeUp}>
-            {hero.status}
-          </motion.span>
+    <section className="hero wrap" id="top">
+      <p className="mono hero-status">{hero.status}</p>
 
-          {/* Name — word by word stagger */}
-          <h1 className="hero-name">
+      <h1 className="hero-name" aria-label={hero.name}>
+        {LINES.map((line, i) => (
+          <span className="hero-line" key={line} aria-hidden="true">
             <motion.span
-              style={{ display: 'flex', flexWrap: 'wrap', gap: '0 0.3em' }}
-              variants={container}
-              initial="hidden"
-              animate="show"
+              initial={reduce ? false : { y: '105%' }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.9, delay: 0.1 + i * 0.12, ease: [0.2, 0.8, 0.2, 1] }}
             >
-              {nameWords.map((word, i) => (
-                <motion.span
-                  key={i}
-                  variants={wordReveal}
-                  transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                  style={{ display: 'inline-block' }}
-                >
-                  {word}
-                </motion.span>
-              ))}
+              {i === 1 ? <em>{line}</em> : line}
             </motion.span>
+          </span>
+        ))}
+      </h1>
 
-            {/* Hand-drawn underline — draws in after name */}
-            <svg className="hero-underline" viewBox="0 0 320 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <motion.path
-                d="M2 8.5C30 3.5 75 2 110 4.5C145 7 190 9 220 6C250 3 285 2.5 318 7"
-                stroke="var(--accent-violet)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                variants={drawLine}
-                initial="hidden"
-                animate="show"
-              />
-            </svg>
-          </h1>
+      <div className="hero-grid">
+        <div className="hero-intro">
+          <p className="hero-tagline">{hero.tagline}</p>
+          <p className="hero-description">{hero.description}</p>
+          <p className="hero-links mono">
+            <a href={hero.resumeUrl} target="_blank" rel="noreferrer">Résumé ↗</a>
+            <a href={hero.githubUrl} target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href={hero.linkedinUrl} target="_blank" rel="noreferrer">LinkedIn ↗</a>
+            <a href={`mailto:${portfolioData.contact.email}`}>Email ↗</a>
+          </p>
 
-          {/* Tagline, description, actions — staggered fade-up */}
-          <motion.p className="hero-tagline" variants={fadeUp}>
-            {hero.tagline}
-          </motion.p>
+          <ul className="hero-metrics">
+            {portfolioData.experience.slice(0, 3).map((e) => (
+              <li key={e.metric}>
+                <span className="metric">{e.metric}</span>
+                <span className="mono metric-label">{e.metricLabel}</span>
+                <span className="hero-metric-org">{e.organization.split(',')[0]}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          <motion.p className="hero-description" variants={fadeUp}>
-            {hero.description}
-          </motion.p>
-
-          <motion.div className="hero-actions" variants={fadeUp}>
-            <MagneticLink href={hero.resumeUrl} target="_blank" rel="noreferrer" className="btn btn-primary">
-              View Resume ↗
-            </MagneticLink>
-            <MagneticLink href={hero.githubUrl} target="_blank" rel="noreferrer" className="btn btn-outline">
-              GitHub →
-            </MagneticLink>
-            <MagneticLink href={hero.linkedinUrl} target="_blank" rel="noreferrer" className="btn btn-outline">
-              LinkedIn →
-            </MagneticLink>
-          </motion.div>
-        </motion.div>
-
-        {/* Photo — gentle scale-in, slightly delayed */}
-        <motion.div
-          className="hero-photo-wrapper"
-          initial={{ opacity: 0, scale: 0.93 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-        >
-          <img src={photo.src} alt={photo.alt} className="hero-photo" />
-        </motion.div>
+        <figure className="plate">
+          <img src={photo.src} alt={photo.alt} />
+          <figcaption className="mono">
+            Fig. 0 — The author. {profile.location}.
+          </figcaption>
+        </figure>
       </div>
     </section>
   )
