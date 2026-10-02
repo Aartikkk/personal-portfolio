@@ -18,7 +18,7 @@ https://aarti-khatri.vercel.app/
 
 - **Palette** — warm paper (`#f1ece2`) and near-black ink with a single vermilion accent. Dark mode ("Ink") inverts the same system. The theme follows the visitor's OS setting on first load and is remembered afterwards.
 - **Type** — Instrument Serif for display and key figures, Hanken Grotesk for body text, IBM Plex Mono for labels, dates, and metadata.
-- **Structure** — numbered sections (§ 01–07) on a 12-column grid, with a sticky section label on the left. No cards, shadows, glows, or background effects.
+- **Structure** — numbered sections (01–07) on a 12-column grid, with a sticky section label on the left. No cards, shadows, glows, or background effects.
 - **Content layout** — Experience is a ruled ledger with the measured result in the right-hand column; Projects is an expandable index; Skills and Education are typeset lists; the BMES poster is a framed figure.
 
 ## Getting Started
@@ -40,7 +40,7 @@ src/
 └── components/
     ├── Navbar.jsx              Fixed top bar, theme toggle, mobile menu
     ├── Hero.jsx                Oversized name, intro, headline metrics, photo figure
-    ├── Section.jsx             Shared numbered section shell (§ label + title)
+    ├── Section.jsx             Shared numbered section shell (number, label, title)
     ├── Reveal.jsx              Scroll-reveal wrapper (skipped for reduced motion)
     ├── About.jsx               Bio and fact list
     ├── Experience.jsx          Ruled ledger with a result column
